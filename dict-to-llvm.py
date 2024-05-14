@@ -45,13 +45,13 @@ class DataType(Enum):
 
 @unique
 class InstructionFormat(IntEnum):
-    R = 0
-    I = auto()
-    S = auto()
-    U = auto()
-    R4 = auto()
-    RVF = auto()
-    # Variants of standard formats that rename a known encoding
+    R = 0  # R-Type
+    I = auto()  # I-Type
+    S = auto()  # S-Type
+    U = auto()  # U-Type
+    R4 = auto()  # R4-Type
+    RVF = auto()  # V-Type
+    # Custom variants of standard formats that rename a known encoding
     # field to match its semantics (e.g.: funct3 -> rm):
     RFRM = auto()
     IFRM = auto()
@@ -100,12 +100,17 @@ class Encoding:
     csr: str
     funct2: str
     funct3: str
-    funct7: str
+    funct7: str  # R-Type
+    imm12: str  # I-Type
+    imm12hi: str  # S-Type
+    imm12lo: str  # S-Type
     # Vector fields
     f2: str
     vecfltop: str
     r: str
     vfmt: str
+    # Xsflt
+    rm: str
 
     @classmethod
     def from_int(cls, encoding: int) -> Self:
@@ -116,11 +121,16 @@ class Encoding:
             funct2=extract_bits(encoding, 25, 2),
             funct3=extract_bits(encoding, 12, 3),
             funct7=extract_bits(encoding, 25, 7),
+            imm12=extract_bits(encoding, 20, 12),
+            imm12hi=extract_bits(encoding, 25, 7),
+            imm12lo=extract_bits(encoding, 7, 5),
             # Vector fields
             f2=extract_bits(encoding, 30, 2),
             vecfltop=extract_bits(encoding, 25, 4),
             r=extract_bits(encoding, 14, 1),
             vfmt=extract_bits(encoding, 12, 2),
+            # Xsflt
+            rm=extract_bits(encoding, 12, 2),
         )
 
     @classmethod
@@ -308,12 +318,13 @@ TBLGEN_OPERAND_TYPES = {
 
 
 def parse_dtypes(mnemonic: str) -> dict[str, str]:
-    # Known instruction mnemonics that make no sense at all
     regs = ("rs1", "rs2", "rs3", "rd")
     match mnemonic:
+        case "flh" | "fsh":
+            return {r: TBLGEN_OPERAND_TYPES[DataType.f16] for r in regs}
         case "flah" | "fsah":
             return {r: TBLGEN_OPERAND_TYPES[DataType.f16alt] for r in regs}
-        case "flb" | "fsb":
+        case "flb" | "fsb" | "flab" | "fsab":
             return {r: TBLGEN_OPERAND_TYPES[DataType.f8] for r in regs}
 
     # Vector format with R: it's just noise in the instruction naming, let's remove it
