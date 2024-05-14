@@ -37,7 +37,8 @@ fcvt.lu.ah rd rs1 24..20=3 31..27=0x18 14..12=5 26..25=2 6..2=0x14 1..0=3
 fcvt.ah.l  rd rs1 24..20=2 31..27=0x1A 14..12=5 26..25=2 6..2=0x14 1..0=3
 fcvt.ah.lu rd rs1 24..20=3 31..27=0x1A 14..12=5 26..25=2 6..2=0x14 1..0=3
 # XfalthalfwithF - alternate half-precision conversions with F extension
-fcvt.s.ah rd rs1 24..20=6 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+$pseudo_op rv_zbfmin::fcvt.s.bf16  fcvt.s.ah  rd rs1 24..20=6 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+# WARNING: the following IS NOT an alias of rv_zbfmin::fcvt.bf16.s
 fcvt.ah.s rd rs1 24..20=0 31..27=0x08 14..12=5 26..25=2 6..2=0x14 1..0=3
 # XfalthalfwithD - alternate half-precision conversions with D extension (in addition to XfalthalfwithF)
 fcvt.d.ah rd rs1 24..20=6 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
