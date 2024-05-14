@@ -328,8 +328,12 @@ def to_tablegen(inst: Instruction) -> str:
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
 
     args = {
-        "def": inst.mnemonic.upper().replace(".", "_"),
-        "mnemonic": inst.mnemonic.replace("_", ".").removeprefix("@"), # FIXME @ means pseudo/alias
+        "def": inst.mnemonic.upper()
+        .replace(".", "_")
+        .removeprefix("@"),  # FIXME @ means pseudo/alias
+        "mnemonic": inst.mnemonic.replace("_", ".").removeprefix(
+            "@"
+        ),  # FIXME @ means pseudo/alias
         "dtype": dtype,
         # Add all known encoding fields:
         **asdict(inst.encoding),
