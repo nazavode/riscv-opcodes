@@ -64,7 +64,6 @@ class InstructionFormat(IntEnum):
     def operands(cls):
         # Beware: different formats can have the same set of operands,
         # the first one appearing in the following list will be matched
-        # first
         return (
             (cls.R, {"rd", "rs1", "rs2"}),
             (cls.I, {"rd", "rs1"}),
@@ -379,6 +378,8 @@ def main():
             input = yaml.safe_load(file)
 
     for mnemonic, spec in input.items():
+        if 'is_pseudo_of' in spec:
+            continue
         inst = Instruction.from_dict(mnemonic, spec)
         # print("// {}".format(inst))
         print(to_tablegen(inst))
