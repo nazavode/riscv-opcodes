@@ -141,6 +141,7 @@ class Instruction:
     @classmethod
     def from_dict(cls, mnemonic: str, spec: dict):
         fmt = InstructionFormat.from_operands(set(spec["variable_fields"]))
+        enc = Encoding.from_string(spec["match"])
         # Manually discriminate vector formats
         if is_vector(mnemonic):
             match fmt:
@@ -155,7 +156,7 @@ class Instruction:
 
         return cls(
             mnemonic=mnemonic,
-            encoding=Encoding.from_string(spec["match"]),
+            encoding=enc,
             format=fmt,
         )
 
@@ -256,9 +257,6 @@ TBLGEN_OPERAND_TYPES = {
     DataType.uwide: "GPR",
 }
 
-# def parse_datatypes_from_mnemonic(mnemonic: str):
-#     parts = mnemonic.upper().split('.')
-
 
 def parse_dtypes(mnemonic: str) -> dict[str, str]:
     # Known instruction mnemonics that make no sense at all
@@ -274,12 +272,12 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
         mnemonic = re.sub("[\._][rR]", "", mnemonic)
 
     # Reasonable mnemonics
-    instruction_types = mnemonic.upper().split("_")[1:]
+    inst_types = mnemonic.upper().split("_")[1:]
     return {
-        "rs1": TBLGEN_OPERAND_TYPES[DataType.from_str(instruction_types[-1])],
-        "rs2": TBLGEN_OPERAND_TYPES[DataType.from_str(instruction_types[-1])],
-        "rs3": TBLGEN_OPERAND_TYPES[DataType.from_str(instruction_types[-1])],
-        "rd": TBLGEN_OPERAND_TYPES[DataType.from_str(instruction_types[0])],
+        "rs1": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
+        "rs2": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
+        "rs3": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
+        "rd": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[0])],
     }
 
 
