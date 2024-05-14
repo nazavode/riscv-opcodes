@@ -157,110 +157,110 @@ class Instruction:
 
 
 TBLGEN_TEMPLATE_R = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstR<{{funct7}},
-                      {{funct3}},
-                      RISCVOpcode<"{{def}}", {{opcode}}>,
-                      (outs {{dtype["rd"]}}:$rd),
-                      (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
-                      "{{mnemonic}}", "$rd, $rs1, $rs2">,
-                      Sched<[]>;
+def {{def}} : RVInstR<{
+                {{funct7}}, // funct7
+                {{funct3}}, // funct3
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
+                "{{mnemonic}}", "$rd, $rs1, $rs2">,
+                Sched<[]>;
 """
 
 TBLGEN_TEMPLATE_IIMM12 = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstI<{{funct7}},
-                      RISCVOpcode<"{{def}}", {{opcode}}>,
-                      (outs {{dtype["rd"]}}:$rd),
-                      (ins {{dtype["rs1"]}}:$rs1, simm12:$imm12),
-                      "{{mnemonic}}", "$rd, $rs1, ${imm12}(${rs1})">,
-                      Sched<[]>;
+def {{def}} : RVInstI<
+                {{funct7}}, // funct7
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, simm12:$imm12),
+                "{{mnemonic}}", "$rd, $rs1, ${imm12}(${rs1})">,
+                Sched<[]>;
 """
 
 TBLGEN_TEMPLATE_SIMM12 = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstS<{{funct7}},
-                      RISCVOpcode<"{{def}}", {{opcode}}>,
-                      (outs ),
-                      (ins {{dtype["rs2"]}}:$rs2, {{dtype["rs1"]}}:$rs1, simm12:$imm12),
-                      "{{mnemonic}}", "$rs2, ${imm12}(${rs1})">,
-                      Sched<[]>;
+def {{def}} : RVInstS<
+                {{funct7}}, // funct7
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs ),
+                (ins {{dtype["rs2"]}}:$rs2, {{dtype["rs1"]}}:$rs1, simm12:$imm12),
+                "{{mnemonic}}", "$rs2, ${imm12}(${rs1})">,
+                Sched<[]>;
 """
 
 TBLGEN_TEMPLATE_R4FRM = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstR4Frm<{{funct7}},
-                          RISCVOpcode<"{{def}}", {{opcode}}>,
-                          (outs {{dtype["rd"]}}:$rd),
-                          (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3, frmarg:$frm),
-                          "{{mnemonic}}", "$rd, $rs1, $rs2, $rs3, $frm">,
-                          Sched<[]>;
+def {{def}} : RVInstR4Frm<
+                {{funct7}}, // funct7
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3, frmarg:$frm),
+                "{{mnemonic}}", "$rd, $rs1, $rs2, $rs3, $frm">,
+                Sched<[]>;
 def          : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
                          ({{def}} {{dtype["rd"]}}:$rd, dtype["rs1"]:$rs1, dtype["rs2"]:$rs2, {{dtype["rd"]}}:$rs3, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_RFRM = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstRFrm<{{funct7}},
-                         RISCVOpcode<"{{def}}", {{opcode}}>,
-                         (outs {{dtype["rd"]}}:$rd),
-                         (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, frmarg:$frm),
-                         "{{mnemonic}}", "$rd, $rs1, $rs2, $frm">,
-                         Sched<[]> ;
+def {{def}} : RVInstRFrm<
+                {{funct7}}, // funct7
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, frmarg:$frm),
+                "{{mnemonic}}", "$rd, $rs1, $rs2, $frm">,
+                Sched<[]>;
 def      : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
                      ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_RVF = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstRVf<{{f2}}, // f2
-                        {{vecfltop}}, // vecfltop
-                        {{r}}, // r
-                        {{vfmt}}, // vfmt
-                        RISCVOpcode<"{{def}}", {{opcode}}>,
-                        (outs {{dtype["rd"]}}:$rd),
-                        (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
-                        "{{mnemonic}}", "$rd, $rs1, $rs2">,
-                        Sched<[]>;
+def {{def}} : RVInstRVf<
+                {{f2}}, // f2
+                {{vecfltop}}, // vecfltop
+                {{r}}, // r
+                {{vfmt}}, // vfmt
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
+                "{{mnemonic}}", "$rd, $rs1, $rs2">,
+                Sched<[]>;
 """
 
 TBLGEN_TEMPLATE_IVF = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstRVf<{{f2}}, // f2
-                        {{vecfltop}}, // vecfltop
-                        {{r}}, // r
-                        {{vfmt}}, // vfmt
-                        RISCVOpcode<"{{def}}", {{opcode}}>,
-                        (outs {{dtype["rd"]}}:$rd),
-                        (ins {{dtype["rs1"]}}:$rs1,
-                        "{{mnemonic}}", "$rd, $rs1">,
-                        Sched<[]>
-                        { let rs2 = {{rs2}}; }
+def {{def}} : RVInstRVf<
+                {{f2}}, // f2
+                {{vecfltop}}, // vecfltop
+                {{r}}, // r
+                {{vfmt}}, // vfmt
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1,
+                "{{mnemonic}}", "$rd, $rs1">,
+                Sched<[]>
+                { let rs2 = {{rs2}}; }
 """
 
 TBLGEN_TEMPLATE_IFRM = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstRFrm<{{funct7}},
-                         RISCVOpcode<"{{def}}", {{opcode}}>,
-                         (outs {{dtype["rd"]}}:$rd),
-                         (ins {{dtype["rs1"]}}:$rs1, frmarg:$frm),
-                         "{{mnemonic}}", "$rd, $rs1, $frm">,
-                         Sched<[]>
-                         { let rs2 = {{rs2}}; }
+def {{def}} : RVInstRFrm<
+                {{funct7}}, // funct7
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, frmarg:$frm),
+                "{{mnemonic}}", "$rd, $rs1, $frm">,
+                Sched<[]>
+                { let rs2 = {{rs2}}; }
 def      : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
                      ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_I = """
-{% set def = mnemonic | upper | replace(".", "_") %}
-def {{def}} : RVInstR<{{funct7}}, // funct7
-                      {{funct3}}, // funct3
-                      RISCVOpcode<"{{def}}", {{opcode}}>,
-                      (outs {{dtype["rd"]}}:$rd),
-                      (ins {{dtype["rs1"]}}:$rs1),
-                      "{{mnemonic}}", "$rd, $rs1">,
-                      Sched<[]>
-                      { let rs2 = {{rs2}}; }
+def {{def}} : RVInstR<
+                {{funct7}}, // funct7
+                {{funct3}}, // funct3
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1),
+                "{{mnemonic}}", "$rd, $rs1">,
+                Sched<[]>
+                { let rs2 = {{rs2}}; }
 """
 
 TBLGEN_TEMPLATES = {
@@ -309,6 +309,8 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
 
     # Reasonable mnemonics
     inst_types = mnemonic.upper().split("_")[1:]
+    source = -1
+    dest = 0
     return {
         "rs1": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
         "rs2": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
@@ -326,7 +328,8 @@ def to_tablegen(inst: Instruction) -> str:
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
 
     args = {
-        "mnemonic": inst.mnemonic.replace("_", ".").removeprefix("@"),
+        "def": inst.mnemonic.upper().replace(".", "_"),
+        "mnemonic": inst.mnemonic.replace("_", ".").removeprefix("@"), # FIXME @ means pseudo/alias
         "dtype": dtype,
         # Add all known encoding fields:
         **asdict(inst.encoding),
