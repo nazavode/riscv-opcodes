@@ -1,17 +1,5 @@
 # Smallfloat extension
 
-# format of a line in this file:
-# <instruction name> <args> <opcode>
-#
-# <opcode> is given by specifying one or more range/value pairs:
-# hi..lo=value or bit=value or arg=value (e.g. 6..2=0x45 10=1 rd=0)
-#
-# <args> is one of rd, rs1, rs2, rs3, aqrl, fm, pred, succ, rm,
-# funct3, imm20, jimm20, imm12, imm12hi, bimm12hi, imm12lo,
-# bimm12lo, zimm, shamt, shamtw, imm5, imm6, vd, vs3, vs1, vs2,
-# vm, wd, amoop, nf, simm5, zimm11, prs3, L, uimms, Luimm5,
-# vseglen, stagger_max, stagger_mask
-
 # SMALLFLOAT SCALAR (fmt: 0=s, 1=d, 2=h (ha with rm=0b101) 3=b)
 # same instrucion format as F extension
 # collected under "Xsmallfloat" name - naming not final
@@ -59,46 +47,46 @@ fcvt.h.ah rd rs1 24..20=6 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 fcvt.ah.h rd rs1 24..20=2 31..27=0x08 14..12=5 26..25=2 6..2=0x14 1..0=3
 
 # RV32Xfquarter - quarter-precision floats
-$pseudo_op rv_q::flq           flb        rd rs1 imm12 14..12=0 6..2=0x01 1..0=3
-$pseudo_op rv_q::fsq           fsb        imm12hi rs1 rs2 imm12lo 14..12=0 6..2=0x09 1..0=3
-$pseudo_op rv_q::fmadd.q       fmadd.b    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x10 1..0=3
-$pseudo_op rv_q::fmsub.q       fmsub.b    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x11 1..0=3
-$pseudo_op rv_q::fnmsub.q      fnmsub.b   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x12 1..0=3
-$pseudo_op rv_q::fnmadd.q      fnmadd.b   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x13 1..0=3
-$pseudo_op rv_q::fadd.q        fadd.b     rd rs1 rs2      31..27=0x00 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fsub.q        fsub.b     rd rs1 rs2      31..27=0x01 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fmul.q        fmul.b     rd rs1 rs2      31..27=0x02 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fdiv.q        fdiv.b     rd rs1 rs2      31..27=0x03 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fsqrt.q       fsqrt.b    rd rs1 24..20=0 31..27=0x0B rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fsgnj.q       fsgnj.b    rd rs1 rs2      31..27=0x04 14..12=0 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fsgnjn.q      fsgnjn.b   rd rs1 rs2      31..27=0x04 14..12=1 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fsgnjx.q      fsgnjx.b   rd rs1 rs2      31..27=0x04 14..12=2 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fmin.q        fmin.b     rd rs1 rs2      31..27=0x05 14..12=0 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fmax.q        fmax.b     rd rs1 rs2      31..27=0x05 14..12=1 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::feq.q         feq.b      rd rs1 rs2      31..27=0x14 14..12=2 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::flt.q         flt.b      rd rs1 rs2      31..27=0x14 14..12=1 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fle.q         fle.b      rd rs1 rs2      31..27=0x14 14..12=0 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.w.q      fcvt.w.b   rd rs1 24..20=0 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.wu.q     fcvt.wu.b  rd rs1 24..20=1 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.q.w      fcvt.b.w   rd rs1 24..20=0 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.q.wu     fcvt.b.wu  rd rs1 24..20=1 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fmv.x.q       fmv.x.b    rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fclass.q      fclass.b   rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv_q::fmv.q.x       fmv.b.x    rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=3 6..2=0x14 1..0=3
+flb        rd rs1 imm12 14..12=0 6..2=0x01 1..0=3
+fsb        imm12hi rs1 rs2 imm12lo 14..12=0 6..2=0x09 1..0=3
+fmadd.b    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x10 1..0=3
+fmsub.b    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x11 1..0=3
+fnmsub.b   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x12 1..0=3
+fnmadd.b   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x13 1..0=3
+fadd.b     rd rs1 rs2      31..27=0x00 rm       26..25=3 6..2=0x14 1..0=3
+fsub.b     rd rs1 rs2      31..27=0x01 rm       26..25=3 6..2=0x14 1..0=3
+fmul.b     rd rs1 rs2      31..27=0x02 rm       26..25=3 6..2=0x14 1..0=3
+fdiv.b     rd rs1 rs2      31..27=0x03 rm       26..25=3 6..2=0x14 1..0=3
+fsqrt.b    rd rs1 24..20=0 31..27=0x0B rm       26..25=3 6..2=0x14 1..0=3
+fsgnj.b    rd rs1 rs2      31..27=0x04 14..12=0 26..25=3 6..2=0x14 1..0=3
+fsgnjn.b   rd rs1 rs2      31..27=0x04 14..12=1 26..25=3 6..2=0x14 1..0=3
+fsgnjx.b   rd rs1 rs2      31..27=0x04 14..12=2 26..25=3 6..2=0x14 1..0=3
+fmin.b     rd rs1 rs2      31..27=0x05 14..12=0 26..25=3 6..2=0x14 1..0=3
+fmax.b     rd rs1 rs2      31..27=0x05 14..12=1 26..25=3 6..2=0x14 1..0=3
+feq.b      rd rs1 rs2      31..27=0x14 14..12=2 26..25=3 6..2=0x14 1..0=3
+flt.b      rd rs1 rs2      31..27=0x14 14..12=1 26..25=3 6..2=0x14 1..0=3
+fle.b      rd rs1 rs2      31..27=0x14 14..12=0 26..25=3 6..2=0x14 1..0=3
+fcvt.w.b   rd rs1 24..20=0 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.wu.b  rd rs1 24..20=1 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.b.w   rd rs1 24..20=0 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+fcvt.b.wu  rd rs1 24..20=1 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+fmv.x.b    rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=3 6..2=0x14 1..0=3
+fmv.b.x    rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=3 6..2=0x14 1..0=3
+fclass.b   rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=3 6..2=0x14 1..0=3
 # RV64Xfquarter: in addition to the above
-$pseudo_op rv64_q::fcvt.l.q    fcvt.l.b   rd rs1 24..20=2 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv64_q::fcvt.lu.q   fcvt.lu.b  rd rs1 24..20=3 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv64_q::fcvt.q.l    fcvt.b.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-$pseudo_op rv64_q::fcvt.q.lu   fcvt.b.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+fcvt.l.b   rd rs1 24..20=2 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.lu.b  rd rs1 24..20=3 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.b.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+fcvt.b.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
 # XfquarterwithF - quarter-precision conversions with F extension
-$pseudo_op rv_q::fcvt.s.q      fcvt.s.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.q.s      fcvt.b.s   rd rs1 24..20=0 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.s.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+fcvt.b.s   rd rs1 24..20=0 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # XfquarterwithD - quarter-precision conversions with D extension (in addition to XfquarterwithF)
-$pseudo_op rv_q::fcvt.d.q      fcvt.d.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
-$pseudo_op rv_q::fcvt.q.d      fcvt.b.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.d.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
+fcvt.b.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfquarterwithhalf - quarter-precision conversions with Xfhalf extension
-$pseudo_op rv_q_zfh::fcvt.h.q  fcvt.h.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
-$pseudo_op rv_q_zfh::fcvt.q.h  fcvt.b.h   rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+fcvt.h.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
+fcvt.b.h   rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfquarterwithalthalf - quarter-precision conversions with Xfalthalf extension
 fcvt.ah.b rd rs1 24..20=3 31..27=0x08 14..12=5 26..25=2 6..2=0x14 1..0=3
 fcvt.b.ah rd rs1 24..20=6 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
