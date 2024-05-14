@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
+import re
 import yaml
 import sys
 import argparse
+import jinja2
+from typing import Set, Self
 from enum import Enum, IntEnum, auto, unique
 from dataclasses import dataclass, asdict
-from typing import Set
-import jinja2
-import re
 
 
 def extract_bits(value: int, offset: int, n: int) -> str:
@@ -36,10 +36,10 @@ class DataType(Enum):
     uwide = "WU"
 
     @classmethod
-    def from_str(cls, type: str):
+    def from_str(cls, type: str) -> Self:
         for label in cls:
             if type == label.value:
-                return label
+                return cls(label)
         raise ValueError(f"DataType: cannot recognize data type from string: '{type}'")
 
 
@@ -60,33 +60,33 @@ class InstructionFormat(IntEnum):
     SIMM12 = auto()
     IVF = auto()
 
-    def operands(self) -> Set[str]:
-        return self.__cls__.format_operands()[self]
-
     @classmethod
-    def format_operands(cls):
-        return {
-            cls.R: {"rd", "rs1", "rs2"},
-            cls.I: {"rd", "rs1"},
-            cls.S: {"rs1", "rs2"},
-            cls.U: {"rd"},
-            cls.R4: {"rd", "rs1", "rs2", "rs3"},
-            cls.RVF: {"rs2", "rs1", "rd"},
+    def operands(cls):
+        # Beware: different formats can have the same set of operands,
+        # the first one appearing in the following list will be matched
+        # first
+        return (
+            (cls.R, {"rd", "rs1", "rs2"}),
+            (cls.I, {"rd", "rs1"}),
+            (cls.S, {"rs1", "rs2"}),
+            (cls.U, {"rd"}),
+            (cls.R4, {"rd", "rs1", "rs2", "rs3"}),
+            (cls.RVF, {"rd", "rs1", "rs2"}),  # same as R
             # Variants of standard formats that rename a known encoding
             # field to match its semantics (e.g.: funct3 -> rm):
-            cls.RFRM: {"rd", "rs1", "rs2", "rm"},
-            cls.IFRM: {"rd", "rs1", "rm"},
-            cls.R4FRM: {"rs1", "rs2", "rs3", "rd", "rm"},
-            cls.IIMM12: {"rs1", "rd", "imm12"},
-            cls.SIMM12: {"rs1", "rs2", "imm12lo", "imm12hi"},
-            cls.IVF: {"rs1", "rd"},
-        }
+            (cls.RFRM, {"rd", "rs1", "rs2", "rm"}),
+            (cls.IFRM, {"rd", "rs1", "rm"}),
+            (cls.R4FRM, {"rs1", "rs2", "rs3", "rd", "rm"}),
+            (cls.IIMM12, {"rs1", "rd", "imm12"}),
+            (cls.SIMM12, {"rs1", "rs2", "imm12lo", "imm12hi"}),
+            (cls.IVF, {"rd", "rs1"}),  # same as I
+        )
 
     @classmethod
-    def from_operands(cls, operands: Set[str]):
-        for fmt, ops in cls.format_operands().items():
+    def from_operands(cls, operands: Set[str]) -> Self:
+        for fmt, ops in cls.operands():
             if operands == ops:
-                return fmt
+                return cls(fmt)
         raise ValueError(
             f"InstructionFormat: cannot recognize instruction format from operands: {operands}"
         )
@@ -108,7 +108,7 @@ class Encoding:
     vfmt: str
 
     @classmethod
-    def from_int(cls, encoding: int):
+    def from_int(cls, encoding: int) -> Self:
         return cls(
             opcode=extract_bits(encoding, 0, 7),
             rs2=extract_bits(encoding, 20, 5),
@@ -124,8 +124,8 @@ class Encoding:
         )
 
     @classmethod
-    def from_string(cls, encoding: str):
-        return Encoding.from_int(int(encoding, 0))
+    def from_string(cls, encoding: str) -> Self:
+        return cls.from_int(int(encoding, 0))
 
 
 @dataclass
@@ -136,7 +136,7 @@ class Instruction:
     format: InstructionFormat
 
     @classmethod
-    def from_dict(cls, mnemonic: str, spec: dict):
+    def from_dict(cls, mnemonic: str, spec: dict) -> Self:
         fmt = InstructionFormat.from_operands(set(spec["variable_fields"]))
         enc = Encoding.from_string(spec["match"])
         # Manually discriminate vector formats
@@ -322,8 +322,6 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
 
     # Reasonable mnemonics
     inst_types = mnemonic.upper().split("_")[1:]
-    source = -1
-    dest = 0
     return {
         "rs1": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
         "rs2": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
