@@ -321,23 +321,23 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
         mnemonic = re.sub("[\\._][rR]", "", mnemonic)
 
     # Reasonable mnemonics
-    inst_types = mnemonic.upper().split("_")[1:]
+    inst_t = mnemonic.upper().split("_")[1:]
+    # fcvt.ah.s <- source
+    #      ^
+    #      dest
+    source_t = TBLGEN_OPERAND_TYPES[DataType.from_str(inst_t[-1])]
+    dest_t = TBLGEN_OPERAND_TYPES[DataType.from_str(inst_t[0])]
     return {
-        "rs1": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
-        "rs2": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
-        "rs3": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[-1])],
-        "rd": TBLGEN_OPERAND_TYPES[DataType.from_str(inst_types[0])],
+        "rs1": source_t,
+        "rs2": source_t,
+        "rs3": source_t,
+        "rd": dest_t,
     }
 
 
 def to_tablegen(inst: Instruction) -> str:
     dtype = parse_dtypes(inst.mnemonic)
-
-    if inst.format not in TBLGEN_TEMPLATES:
-        return "// TODO"
-
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
-
     args = {
         "def": inst.mnemonic.upper().replace(".", "_"),
         "mnemonic": inst.mnemonic.replace("_", "."),
@@ -350,7 +350,8 @@ def to_tablegen(inst: Instruction) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Process input from positional argument or stdin"
+        description="Process an instruction YAML dictionary produced "
+        "by riscv-opcodes and emits tablegen instruction definitions for the LLVM backend."
     )
     parser.add_argument(
         "input",
