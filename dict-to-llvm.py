@@ -96,9 +96,10 @@ class InstructionFormat(IntEnum):
 class Encoding:
 
     opcode: str
-    funct3: str
     rs2: str
     csr: str
+    funct2: str
+    funct3: str
     funct7: str
     # Vector fields
     f2: str
@@ -110,9 +111,10 @@ class Encoding:
     def from_int(cls, encoding: int):
         return cls(
             opcode=extract_bits(encoding, 0, 7),
-            funct3=extract_bits(encoding, 12, 3),
             rs2=extract_bits(encoding, 20, 5),
             csr=extract_bits(encoding, 20, 12),
+            funct2=extract_bits(encoding, 25, 2),
+            funct3=extract_bits(encoding, 12, 3),
             funct7=extract_bits(encoding, 25, 7),
             # Vector fields
             f2=extract_bits(encoding, 30, 2),
@@ -187,6 +189,17 @@ def {{def}} : RVInstS<
                 Sched<[]>;
 """
 
+TBLGEN_TEMPLATE_R4 = """
+def {{def}} : RVInstR4<
+                {{funct2}}, // funct2
+                {{funct3}}, // funct3
+                RISCVOpcode<"{{def}}", {{opcode}}>,
+                (outs {{dtype["rd"]}}:$rd),
+                (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3),
+                "{{mnemonic}}", "$rd, $rs1, $rs2, $rs3">,
+                Sched<[]>;
+"""
+
 TBLGEN_TEMPLATE_R4FRM = """
 def {{def}} : RVInstR4Frm<
                 {{funct7}}, // funct7
@@ -195,8 +208,8 @@ def {{def}} : RVInstR4Frm<
                 (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3, frmarg:$frm),
                 "{{mnemonic}}", "$rd, $rs1, $rs2, $rs3, $frm">,
                 Sched<[]>;
-def          : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
-                         ({{def}} {{dtype["rd"]}}:$rd, dtype["rs1"]:$rs1, dtype["rs2"]:$rs2, {{dtype["rd"]}}:$rs3, FRM_DYN)>;
+def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
+               ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rd"]}}:$rs3, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_RFRM = """
@@ -207,8 +220,8 @@ def {{def}} : RVInstRFrm<
                 (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, frmarg:$frm),
                 "{{mnemonic}}", "$rd, $rs1, $rs2, $frm">,
                 Sched<[]>;
-def      : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
-                     ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, FRM_DYN)>;
+def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
+               ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_RVF = """
@@ -247,8 +260,8 @@ def {{def}} : RVInstRFrm<
                 "{{mnemonic}}", "$rd, $rs1, $frm">,
                 Sched<[]>
                 { let rs2 = {{rs2}}; }
-def      : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
-                     ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
+def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
+               ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_I = """
@@ -268,7 +281,7 @@ TBLGEN_TEMPLATES = {
     InstructionFormat.I: TBLGEN_TEMPLATE_I,
     # InstructionFormat.S: TBLGEN_TEMPLATE_S, // not needed by xsflt
     # InstructionFormat.U: TBLGEN_TEMPLATE_U, // not needed by xsflt
-    # InstructionFormat.R4: TBLGEN_TEMPLATE_R4, // not needed by xsflt, all R4 are aliases
+    InstructionFormat.R4: TBLGEN_TEMPLATE_R4,
     InstructionFormat.RFRM: TBLGEN_TEMPLATE_RFRM,
     InstructionFormat.IFRM: TBLGEN_TEMPLATE_IFRM,
     InstructionFormat.R4FRM: TBLGEN_TEMPLATE_R4FRM,
@@ -361,7 +374,7 @@ def main():
 
     for mnemonic, spec in input.items():
         inst = Instruction.from_dict(mnemonic, spec)
-        print("// {}".format(inst))
+        # print("// {}".format(inst))
         print(to_tablegen(inst))
 
 
