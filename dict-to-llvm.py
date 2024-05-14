@@ -333,7 +333,7 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
 
 
 def to_tablegen(inst: Instruction) -> str:
-    dtype = parse_dtypes(inst.mnemonic.replace("@", ""))  # FIXME
+    dtype = parse_dtypes(inst.mnemonic)
 
     if inst.format not in TBLGEN_TEMPLATES:
         return "// TODO"
@@ -341,12 +341,8 @@ def to_tablegen(inst: Instruction) -> str:
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
 
     args = {
-        "def": inst.mnemonic.upper()
-        .replace(".", "_")
-        .removeprefix("@"),  # FIXME @ means pseudo/alias
-        "mnemonic": inst.mnemonic.replace("_", ".").removeprefix(
-            "@"
-        ),  # FIXME @ means pseudo/alias
+        "def": inst.mnemonic.upper().replace(".", "_"),
+        "mnemonic": inst.mnemonic.replace("_", "."),
         "dtype": dtype,
         # Add all known encoding fields:
         **asdict(inst.encoding),
