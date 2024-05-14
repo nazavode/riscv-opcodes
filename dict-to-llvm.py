@@ -10,12 +10,10 @@ import jinja2
 import re
 
 
-def to_bin(value: int) -> str:
-    return "0b{0:b}".format(value)
-
-
-def extract_bits(value: int, offset: int, n: int) -> int:
-    return (value >> offset) & ((1 << n) - 1)
+def extract_bits(value: int, offset: int, n: int) -> str:
+    decimal = (value >> offset) & ((1 << n) - 1)
+    bin = "{0:b}".format(decimal)
+    return "0b" + bin.zfill(n)
 
 
 def is_vector(mnemonic: str) -> bool:
@@ -97,19 +95,16 @@ class InstructionFormat(IntEnum):
 @dataclass
 class Encoding:
 
-    opcode: int
-    funct3: int
-    rs2: int
-    csr: int
-    funct7: int
+    opcode: str
+    funct3: str
+    rs2: str
+    csr: str
+    funct7: str
     # Vector fields
-    f2: int
-    vecfltop: int
-    r: int
-    vfmt: int
-
-    def to_bin(self) -> dict[str, str]:
-        return {field: to_bin(value) for field, value in asdict(self).items()}
+    f2: str
+    vecfltop: str
+    r: str
+    vfmt: str
 
     @classmethod
     def from_int(cls, encoding: int):
@@ -334,7 +329,7 @@ def to_tablegen(inst: Instruction) -> str:
         "mnemonic": inst.mnemonic.replace("_", ".").removeprefix("@"),
         "dtype": dtype,
         # Add all known encoding fields:
-        **inst.encoding.to_bin(),
+        **asdict(inst.encoding),
     }
     return template.render(**args)
 
