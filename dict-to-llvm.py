@@ -164,6 +164,7 @@ class Instruction:
 TBLGEN_TEMPLATE_R = """
 {% set def = mnemonic | upper | replace(".", "_") %}
 def {{def}} : RVInstR<{{funct7}},
+                      {{funct3}},
                       RISCVOpcode<"{{def}}", {{opcode}}>,
                       (outs {{dtype["rd"]}}:$rd),
                       (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
@@ -228,18 +229,58 @@ def {{def}} : RVInstRVf<{{f2}}, // f2
                         Sched<[]>;
 """
 
+TBLGEN_TEMPLATE_IVF = """
+{% set def = mnemonic | upper | replace(".", "_") %}
+def {{def}} : RVInstRVf<{{f2}}, // f2
+                        {{vecfltop}}, // vecfltop
+                        {{r}}, // r
+                        {{vfmt}}, // vfmt
+                        RISCVOpcode<"{{def}}", {{opcode}}>,
+                        (outs {{dtype["rd"]}}:$rd),
+                        (ins {{dtype["rs1"]}}:$rs1,
+                        "{{mnemonic}}", "$rd, $rs1">,
+                        Sched<[]>
+                        { let rs2 = {{rs2}}; }
+"""
+
+TBLGEN_TEMPLATE_IFRM = """
+{% set def = mnemonic | upper | replace(".", "_") %}
+def {{def}} : RVInstRFrm<{{funct7}},
+                         RISCVOpcode<"{{def}}", {{opcode}}>,
+                         (outs {{dtype["rd"]}}:$rd),
+                         (ins {{dtype["rs1"]}}:$rs1, frmarg:$frm),
+                         "{{mnemonic}}", "$rd, $rs1, $frm">,
+                         Sched<[]>
+                         { let rs2 = {{rs2}}; }
+def      : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
+                     ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
+"""
+
+TBLGEN_TEMPLATE_I = """
+{% set def = mnemonic | upper | replace(".", "_") %}
+def {{def}} : RVInstR<{{funct7}}, // funct7
+                      {{funct3}}, // funct3
+                      RISCVOpcode<"{{def}}", {{opcode}}>,
+                      (outs {{dtype["rd"]}}:$rd),
+                      (ins {{dtype["rs1"]}}:$rs1),
+                      "{{mnemonic}}", "$rd, $rs1">,
+                      Sched<[]>
+                      { let rs2 = {{rs2}}; }
+"""
+
 TBLGEN_TEMPLATES = {
     InstructionFormat.R: TBLGEN_TEMPLATE_R,
-    # InstructionFormat.I: TBLGEN_TEMPLATE_I,
-    # InstructionFormat.S: TBLGEN_TEMPLATE_S,
-    # InstructionFormat.U: TBLGEN_TEMPLATE_U,
-    # InstructionFormat.R4: TBLGEN_TEMPLATE_R4,
+    InstructionFormat.I: TBLGEN_TEMPLATE_I,
+    # InstructionFormat.S: TBLGEN_TEMPLATE_S, // not needed by xsflt
+    # InstructionFormat.U: TBLGEN_TEMPLATE_U, // not needed by xsflt
+    # InstructionFormat.R4: TBLGEN_TEMPLATE_R4, // not needed by xsflt, all R4 are aliases
     InstructionFormat.RFRM: TBLGEN_TEMPLATE_RFRM,
-    # InstructionFormat.IFRM: TBLGEN_TEMPLATE_IFRM,
+    InstructionFormat.IFRM: TBLGEN_TEMPLATE_IFRM,
     InstructionFormat.R4FRM: TBLGEN_TEMPLATE_R4FRM,
     InstructionFormat.IIMM12: TBLGEN_TEMPLATE_IIMM12,
     InstructionFormat.SIMM12: TBLGEN_TEMPLATE_SIMM12,
     InstructionFormat.RVF: TBLGEN_TEMPLATE_RVF,
+    InstructionFormat.IVF: TBLGEN_TEMPLATE_IVF,
 }
 
 TBLGEN_OPERAND_TYPES = {
@@ -269,7 +310,7 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
 
     # Vector format with R: it's just noise in the instruction naming, let's remove it
     if is_vector(mnemonic):
-        mnemonic = re.sub("[\._][rR]", "", mnemonic)
+        mnemonic = re.sub("[\\._][rR]", "", mnemonic)
 
     # Reasonable mnemonics
     inst_types = mnemonic.upper().split("_")[1:]
