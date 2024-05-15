@@ -345,11 +345,14 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
     }
 
 
-def to_tablegen(inst: Instruction) -> str:
+def to_tablegen(inst: Instruction, defprefix=None) -> str:
     dtype = parse_dtypes(inst.mnemonic)
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
+    tblgendef = inst.mnemonic.upper().replace(".", "_")
+    if defprefix:
+        tblgendef = defprefix + tblgendef
     args = {
-        "def": inst.mnemonic.upper().replace(".", "_"),
+        "def": tblgendef,
         "mnemonic": inst.mnemonic.replace("_", "."),
         "dtype": dtype,
         # Add all known encoding fields:
@@ -362,6 +365,13 @@ def main():
     parser = argparse.ArgumentParser(
         description="Process an instruction YAML dictionary produced "
         "by riscv-opcodes and emits tablegen instruction definitions for the LLVM backend."
+    )
+    parser.add_argument(
+        "-p",
+        "--prefix",
+        type=str,
+        default=None,
+        help="Prefix for Tablegen definitions.",
     )
     parser.add_argument(
         "input",
@@ -378,11 +388,11 @@ def main():
             input = yaml.safe_load(file)
 
     for mnemonic, spec in input.items():
-        if 'is_pseudo_of' in spec:
+        if "is_pseudo_of" in spec:
             continue
         inst = Instruction.from_dict(mnemonic, spec)
         # print("// {}".format(inst))
-        print(to_tablegen(inst))
+        print(to_tablegen(inst, args.prefix))
 
 
 if __name__ == "__main__":
