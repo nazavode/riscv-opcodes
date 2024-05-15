@@ -6,7 +6,8 @@ overlapping_extensions = {
     'rv_zcmt': {'rv_c_d'},
     'rv_zcmp': {'rv_c_d'},
     'rv_c': {'rv_zcmop'},
-    'rv_xsflt': {'rv_xsflt', 'rv_zfh', 'rv_zfh_zfa', 'rv_zfbfmin', 'rv_zksed', 'rv_v', 'rv_q_zfh', 'rv_q', 'rv_d_zfh', 'rv64_zfh', 'rv64_q', 'rv32_zkne', 'rv32_zknd'},
+    'rv_xsfltp': {'rv_xsflts', 'rv_xsfltp', 'rv_zfh', 'rv_zfh_zfa', 'rv_zfbfmin', 'rv_zksed', 'rv_v', 'rv_q_zfh', 'rv_q', 'rv_d_zfh', 'rv64_zfh', 'rv64_q', 'rv32_zkne', 'rv32_zknd'},
+    'rv_xsflts': {'rv_xsflts', 'rv_xsfltp', 'rv_zfh', 'rv_zfh_zfa', 'rv_zfbfmin', 'rv_zksed', 'rv_v', 'rv_q_zfh', 'rv_q', 'rv_d_zfh', 'rv64_zfh', 'rv64_q', 'rv32_zkne', 'rv32_zknd'},
 }
 
 overlapping_instructions = {
@@ -22,22 +23,22 @@ re.compile("^RV(32|64|128)[IE]+[ABCDEFGHJKLMNPQSTUVX]*(Zicsr|Zifencei|Zihintpaus
 
 # regex to find <msb>..<lsb>=<val> patterns in instruction
 fixed_ranges = re.compile(
-    '\s*(?P<msb>\d+.?)\.\.(?P<lsb>\d+.?)\s*=\s*(?P<val>\d[\w]*)[\s$]*', re.M)
+    '\\s*(?P<msb>\\d+.?)\\.\\.(?P<lsb>\\d+.?)\\s*=\\s*(?P<val>\\d[\\w]*)[\\s$]*', re.M)
 
 # regex to find <lsb>=<val> patterns in instructions
 #single_fixed = re.compile('\s+(?P<lsb>\d+)=(?P<value>[\w\d]*)[\s$]*', re.M)
-single_fixed = re.compile('(?:^|[\s])(?P<lsb>\d+)=(?P<value>[\w]*)((?=\s|$))', re.M)
+single_fixed = re.compile('(?:^|[\\s])(?P<lsb>\\d+)=(?P<value>[\\w]*)((?=\\s|$))', re.M)
 
 # regex to find the overloading condition variable
-var_regex = re.compile('(?P<var>[a-zA-Z][\w\d]*)\s*=\s*.*?[\s$]*', re.M)
+var_regex = re.compile('(?P<var>[a-zA-Z][\\w\\d]*)\\s*=\\s*.*?[\\s$]*', re.M)
 
 # regex for pseudo op instructions returns the dependent filename, dependent
 # instruction, the pseudo op name and the encoding string
 pseudo_regex = re.compile(
-    '^\$pseudo_op\s+(?P<filename>rv[\d]*_[\w].*)::\s*(?P<orig_inst>.*?)\s+(?P<pseudo_inst>.*?)\s+(?P<overload>.*)$'
+    '^\\$pseudo_op\\s+(?P<filename>rv[\\d]*_[\\w].*)::\\s*(?P<orig_inst>.*?)\\s+(?P<pseudo_inst>.*?)\\s+(?P<overload>.*)$'
 , re.M)
 
-imported_regex = re.compile('^\s*\$import\s*(?P<extension>.*)\s*::\s*(?P<instruction>.*)', re.M)
+imported_regex = re.compile('^\\s*\\$import\\s*(?P<extension>.*)\\s*::\\s*(?P<instruction>.*)', re.M)
 
 causes = []
 with open("causes.csv") as f:
