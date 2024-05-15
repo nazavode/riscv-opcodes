@@ -988,21 +988,22 @@ def signed(value, width):
 
 
 if __name__ == "__main__":
-    print(f'Running with args : {sys.argv}')
+    logging.info(f'Running with args : {sys.argv}')
 
     extensions = sys.argv[1:]
     for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl']:
         if i in extensions:
             extensions.remove(i)
-    print(f'Extensions selected : {extensions}')
+    logging.info(f'Extensions selected : {extensions}')
 
     include_pseudo = False
     if "-go" in sys.argv[1:]:
         include_pseudo = True
 
     instr_dict = create_inst_dict(extensions, include_pseudo)
-    with open('instr_dict.yaml', 'w') as outfile:
-        yaml.dump(instr_dict, outfile, default_flow_style=False)
+    # with open('instr_dict.yaml', 'w') as outfile:
+    #     yaml.dump(instr_dict, outfile, default_flow_style=False)
+    yaml.dump(instr_dict, sys.stdout, default_flow_style=False)
     instr_dict = collections.OrderedDict(sorted(instr_dict.items()))
 
     if '-c' in sys.argv[1:]:
