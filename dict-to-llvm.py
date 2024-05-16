@@ -125,7 +125,7 @@ class Encoding:
             imm12lo=extract_bits(encoding, 7, 5),
             # Vector fields
             f2=extract_bits(encoding, 30, 2),
-            vecfltop=extract_bits(encoding, 25, 4),
+            vecfltop=extract_bits(encoding, 25, 5),
             r=extract_bits(encoding, 14, 1),
             vfmt=extract_bits(encoding, 12, 2),
             # Xsflt
@@ -168,7 +168,8 @@ class Instruction:
 
 
 TBLGEN_TEMPLATE_R = """
-def {{def}} : RVInstR<{
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+def {{def}} : RVInstR<
                 {{funct7}}, // funct7
                 {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -179,8 +180,9 @@ def {{def}} : RVInstR<{
 """
 
 TBLGEN_TEMPLATE_IIMM12 = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstI<
-                {{funct7}}, // funct7
+                {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
                 (outs {{dtype["rd"]}}:$rd),
                 (ins {{dtype["rs1"]}}:$rs1, simm12:$imm12),
@@ -189,8 +191,9 @@ def {{def}} : RVInstI<
 """
 
 TBLGEN_TEMPLATE_SIMM12 = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstS<
-                {{funct7}}, // funct7
+                {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
                 (outs ),
                 (ins {{dtype["rs2"]}}:$rs2, {{dtype["rs1"]}}:$rs1, simm12:$imm12),
@@ -199,6 +202,7 @@ def {{def}} : RVInstS<
 """
 
 TBLGEN_TEMPLATE_R4 = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstR4<
                 {{funct2}}, // funct2
                 {{funct3}}, // funct3
@@ -210,8 +214,9 @@ def {{def}} : RVInstR4<
 """
 
 TBLGEN_TEMPLATE_R4FRM = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstR4Frm<
-                {{funct7}}, // funct7
+                {{funct2}}, // funct2
                 RISCVOpcode<"{{def}}", {{opcode}}>,
                 (outs {{dtype["rd"]}}:$rd),
                 (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3, frmarg:$frm),
@@ -222,6 +227,7 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
 """
 
 TBLGEN_TEMPLATE_RFRM = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstRFrm<
                 {{funct7}}, // funct7
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -234,6 +240,7 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
 """
 
 TBLGEN_TEMPLATE_RVF = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstRVf<
                 {{f2}}, // f2
                 {{vecfltop}}, // vecfltop
@@ -247,6 +254,7 @@ def {{def}} : RVInstRVf<
 """
 
 TBLGEN_TEMPLATE_IVF = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstRVf<
                 {{f2}}, // f2
                 {{vecfltop}}, // vecfltop
@@ -254,13 +262,14 @@ def {{def}} : RVInstRVf<
                 {{vfmt}}, // vfmt
                 RISCVOpcode<"{{def}}", {{opcode}}>,
                 (outs {{dtype["rd"]}}:$rd),
-                (ins {{dtype["rs1"]}}:$rs1,
+                (ins {{dtype["rs1"]}}:$rs1),
                 "{{mnemonic}}", "$rd, $rs1">,
                 Sched<[]>
                 { let rs2 = {{rs2}}; }
 """
 
 TBLGEN_TEMPLATE_IFRM = """
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
 def {{def}} : RVInstRFrm<
                 {{funct7}}, // funct7
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -269,20 +278,21 @@ def {{def}} : RVInstRFrm<
                 "{{mnemonic}}", "$rd, $rs1, $frm">,
                 Sched<[]>
                 { let rs2 = {{rs2}}; }
-def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
+def: InstAlias<"{{mnemonic}} $rd, $rs1",
                ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
 """
 
 TBLGEN_TEMPLATE_I = """
-def {{def}} : RVInstR<
-                {{funct7}}, // funct7
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+def {{def}} : RVInstI<
                 {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
                 (outs {{dtype["rd"]}}:$rd),
                 (ins {{dtype["rs1"]}}:$rs1),
                 "{{mnemonic}}", "$rd, $rs1">,
-                Sched<[]>
-                { let rs2 = {{rs2}}; }
+                Sched<[]> {
+    let imm12 = {{imm12}};
+}
 """
 
 TBLGEN_TEMPLATES = {
@@ -345,7 +355,7 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
     }
 
 
-def to_tablegen(inst: Instruction, defprefix=None) -> str:
+def to_tablegen(inst: Instruction, defprefix: str = None, decoderns: str = None) -> str:
     dtype = parse_dtypes(inst.mnemonic)
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
     tblgendef = inst.mnemonic.upper().replace(".", "_")
@@ -355,6 +365,7 @@ def to_tablegen(inst: Instruction, defprefix=None) -> str:
         "def": tblgendef,
         "mnemonic": inst.mnemonic.replace("_", "."),
         "dtype": dtype,
+        "decoderns": decoderns,
         # Add all known encoding fields:
         **asdict(inst.encoding),
     }
@@ -367,11 +378,16 @@ def main():
         "by riscv-opcodes and emits tablegen instruction definitions for the LLVM backend."
     )
     parser.add_argument(
-        "-p",
-        "--prefix",
+        "--defprefix",
         type=str,
         default=None,
         help="Prefix for Tablegen definitions.",
+    )
+    parser.add_argument(
+        "--decoderns",
+        type=str,
+        default=None,
+        help="LLVM decoding namespace.",
     )
     parser.add_argument(
         "input",
@@ -394,7 +410,7 @@ def main():
             continue
         inst = Instruction.from_dict(mnemonic, spec)
         # print("// {}".format(inst))
-        print(to_tablegen(inst, args.prefix))
+        print(to_tablegen(inst, args.defprefix, args.decoderns))
 
 
 if __name__ == "__main__":
