@@ -5,7 +5,7 @@ import yaml
 import sys
 import argparse
 import jinja2
-from typing import Set, Self
+from typing import Set, Self, Any
 from enum import Enum, IntEnum, auto, unique
 from dataclasses import dataclass, asdict
 
@@ -108,8 +108,6 @@ class Encoding:
     vecfltop: str
     r: str
     vfmt: str
-    # Xsflt
-    rm: str
 
     @classmethod
     def from_int(cls, encoding: int) -> Self:
@@ -128,8 +126,6 @@ class Encoding:
             vecfltop=extract_bits(encoding, 25, 5),
             r=extract_bits(encoding, 14, 1),
             vfmt=extract_bits(encoding, 12, 2),
-            # Xsflt
-            rm=extract_bits(encoding, 12, 2),
         )
 
     @classmethod
@@ -168,7 +164,9 @@ class Instruction:
 
 
 TBLGEN_TEMPLATE_R = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstR<
                 {{funct7}}, // funct7
                 {{funct3}}, // funct3
@@ -180,7 +178,9 @@ def {{def}} : RVInstR<
 """
 
 TBLGEN_TEMPLATE_IIMM12 = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstI<
                 {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -191,7 +191,9 @@ def {{def}} : RVInstI<
 """
 
 TBLGEN_TEMPLATE_SIMM12 = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstS<
                 {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -202,7 +204,9 @@ def {{def}} : RVInstS<
 """
 
 TBLGEN_TEMPLATE_R4 = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstR4<
                 {{funct2}}, // funct2
                 {{funct3}}, // funct3
@@ -214,7 +218,9 @@ def {{def}} : RVInstR4<
 """
 
 TBLGEN_TEMPLATE_R4FRM = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstR4Frm<
                 {{funct2}}, // funct2
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -227,7 +233,9 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
 """
 
 TBLGEN_TEMPLATE_RFRM = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstRFrm<
                 {{funct7}}, // funct7
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -240,7 +248,9 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
 """
 
 TBLGEN_TEMPLATE_RVF = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstRVf<
                 {{f2}}, // f2
                 {{vecfltop}}, // vecfltop
@@ -254,7 +264,9 @@ def {{def}} : RVInstRVf<
 """
 
 TBLGEN_TEMPLATE_IVF = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstRVf<
                 {{f2}}, // f2
                 {{vecfltop}}, // vecfltop
@@ -269,7 +281,9 @@ def {{def}} : RVInstRVf<
 """
 
 TBLGEN_TEMPLATE_IFRM = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstRFrm<
                 {{funct7}}, // funct7
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -283,7 +297,9 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1",
 """
 
 TBLGEN_TEMPLATE_I = """
-let hasSideEffects = 0, mayLoad = 0, mayStore = 0{% if decoderns %}, DecoderNamespace = "{{decoderns}}"{% endif %} in
+{% if properties -%}
+let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
+{%- endif %}
 def {{def}} : RVInstI<
                 {{funct3}}, // funct3
                 RISCVOpcode<"{{def}}", {{opcode}}>,
@@ -326,7 +342,7 @@ TBLGEN_OPERAND_TYPES = {
 }
 
 
-def parse_dtypes(mnemonic: str) -> dict[str, str]:
+def get_dtypes(mnemonic: str) -> dict[str, str]:
     regs = ("rs1", "rs2", "rs3", "rd")
     match mnemonic:
         case "flh" | "fsh":
@@ -355,17 +371,35 @@ def parse_dtypes(mnemonic: str) -> dict[str, str]:
     }
 
 
-def to_tablegen(inst: Instruction, defprefix: str = None, decoderns: str = None) -> str:
-    dtype = parse_dtypes(inst.mnemonic)
+def get_properties(mnemonic: str) -> dict[str, Any]:
+    properties = {"hasSideEffects": 0, "mayLoad": 0, "mayStore": 0}
+    match mnemonic:
+        case "flh" | "flah" | "flb" | "flab":
+            properties["mayLoad"] = 1
+        case "fsh" | "fsah" | "fsb" | "fsab":
+            properties["mayStore"] = 1
+    return properties
+
+
+def to_tablegen(
+    inst: Instruction, defprefix: str | None = None, decoderns: str | None = None
+) -> str:
+    dtype = get_dtypes(inst.mnemonic)
+    properties = get_properties(inst.mnemonic)
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
     tblgendef = inst.mnemonic.upper().replace(".", "_")
+
+    if decoderns:
+        properties["DecoderNamespace"] = f'"{decoderns}"'
+
     if defprefix:
         tblgendef = defprefix + tblgendef
+
     args = {
         "def": tblgendef,
         "mnemonic": inst.mnemonic.replace("_", "."),
         "dtype": dtype,
-        "decoderns": decoderns,
+        "properties": properties,
         # Add all known encoding fields:
         **asdict(inst.encoding),
     }
