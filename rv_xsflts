@@ -77,50 +77,49 @@ fcvt.h.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 
 # RV32Xfalthalf - alternate half-precision floats
 # startgroup Xfalthalf alternate half-precision floats
-$pseudo_op rv_zfh::flh  flah      rd rs1 imm12 14..12=1 6..2=0x01 1..0=3
-$pseudo_op rv_zfh::fsh  fsah      imm12hi rs1 rs2 imm12lo 14..12=1 6..2=0x09 1..0=3
-fmadd.ah   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x10 1..0=3
-fmsub.ah   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x11 1..0=3
-fnmsub.ah  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x12 1..0=3
-fnmadd.ah  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x13 1..0=3
-fadd.ah    rd rs1 rs2      31..27=0x00 rm       26..25=2 6..2=0x14 1..0=3
-fsub.ah    rd rs1 rs2      31..27=0x01 rm       26..25=2 6..2=0x14 1..0=3
-fmul.ah    rd rs1 rs2      31..27=0x02 rm       26..25=2 6..2=0x14 1..0=3
-fdiv.ah    rd rs1 rs2      31..27=0x03 rm       26..25=2 6..2=0x14 1..0=3
-fsqrt.ah   rd rs1 24..20=0 31..27=0x0B rm       26..25=2 6..2=0x14 1..0=3
-fsgnj.ah   rd rs1 rs2      31..27=0x04 14..12=0 26..25=2 6..2=0x14 1..0=3
-fsgnjn.ah  rd rs1 rs2      31..27=0x04 14..12=1 26..25=2 6..2=0x14 1..0=3
-fsgnjx.ah  rd rs1 rs2      31..27=0x04 14..12=2 26..25=2 6..2=0x14 1..0=3
-fmin.ah    rd rs1 rs2      31..27=0x05 14..12=0 26..25=2 6..2=0x14 1..0=3
-fmax.ah    rd rs1 rs2      31..27=0x05 14..12=1 26..25=2 6..2=0x14 1..0=3
-feq.ah     rd rs1 rs2      31..27=0x14 14..12=2 26..25=2 6..2=0x14 1..0=3
-flt.ah     rd rs1 rs2      31..27=0x14 14..12=1 26..25=2 6..2=0x14 1..0=3
-fle.ah     rd rs1 rs2      31..27=0x14 14..12=0 26..25=2 6..2=0x14 1..0=3
-fcvt.w.ah  rd rs1 24..20=0 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.wu.ah rd rs1 24..20=1 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.w  rd rs1 24..20=0 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.wu rd rs1 24..20=1 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fmv.x.ah   rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=2 6..2=0x14 1..0=3
-fclass.ah  rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=2 6..2=0x14 1..0=3
-fmv.ah.x   rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::flh           flah        rd rs1 imm12 14..12=1 6..2=0x01 1..0=3
+$pseudo_op rv_zfh::fsh           fsah        imm12hi rs1 rs2 imm12lo 14..12=1 6..2=0x09 1..0=3
+$pseudo_op rv_zfh::fmadd.h       fmadd.ah    rd rs1 rs2 rs3 rm 26..25=2 6..2=0x10 1..0=3
+$pseudo_op rv_zfh::fmsub.h       fmsub.ah    rd rs1 rs2 rs3 rm 26..25=2 6..2=0x11 1..0=3
+$pseudo_op rv_zfh::fnmsub.h      fnmsub.ah   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x12 1..0=3
+$pseudo_op rv_zfh::fnmadd.h      fnmadd.ah   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x13 1..0=3
+$pseudo_op rv_zfh::fadd.h        fadd.ah     rd rs1 rs2      31..27=0x00 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fsub.h        fsub.ah     rd rs1 rs2      31..27=0x01 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fmul.h        fmul.ah     rd rs1 rs2      31..27=0x02 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fdiv.h        fdiv.ah     rd rs1 rs2      31..27=0x03 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fsqrt.h       fsqrt.ah    rd rs1 24..20=0 31..27=0x0B rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fsgnj.h       fsgnj.ah    rd rs1 rs2      31..27=0x04 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fsgnjn.h      fsgnjn.ah   rd rs1 rs2      31..27=0x04 14..12=1 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fsgnjx.h      fsgnjx.ah   rd rs1 rs2      31..27=0x04 14..12=2 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fmin.h        fmin.ah     rd rs1 rs2      31..27=0x05 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fmax.h        fmax.ah     rd rs1 rs2      31..27=0x05 14..12=1 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::feq.h         feq.ah      rd rs1 rs2      31..27=0x14 14..12=2 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::flt.h         flt.ah      rd rs1 rs2      31..27=0x14 14..12=1 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fle.h         fle.ah      rd rs1 rs2      31..27=0x14 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.w.h      fcvt.w.ah   rd rs1 24..20=0 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.wu.h     fcvt.wu.ah  rd rs1 24..20=1 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.h.w      fcvt.ah.w   rd rs1 24..20=0 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.h.wu     fcvt.ah.wu  rd rs1 24..20=1 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fmv.x.h       fmv.x.ah    rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fclass.h      fclass.ah   rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fmv.h.x       fmv.ah.x    rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=2 6..2=0x14 1..0=3
 # RV64Xfhalf: in addition to the above
-fcvt.l.ah  rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.lu.ah rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.l  rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.lu rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.l.h   fcvt.l.ah   rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.lu.h  fcvt.lu.ah  rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.l   fcvt.ah.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.lu  fcvt.ah.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
 # XfhalfwithF - half-precision conversions with F extension
 # $pseudo_op rv_zfbfmin::fcvt.s.bf16  fcvt.s.ah  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
-fcvt.s.ah  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
-# WARNING: the following IS NOT an alias of rv_zbfmin::fcvt.bf16.s
-fcvt.ah.s  rd rs1 24..20=0 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.s.h      fcvt.s.ah   rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+$pseudo_op rv_zfh::fcvt.h.s      fcvt.ah.s   rd rs1 24..20=0 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # XfhalfwithD - half-precision conversions with D extension (in addition to XfhalfwithF)
-fcvt.d.ah  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
-fcvt.ah.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.d.h   fcvt.d.ah   rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.d   fcvt.ah.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # Xfalthalfwithhalf - alternate half-precision conversions with Xfhalf extension
-fcvt.h.h    rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.h  rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.h.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.ah.ah rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+fcvt.h.h                                     rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.h   fcvt.ah.h   rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.h   fcvt.h.ah   rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.h   fcvt.ah.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # end_group
 
 # █▀█ █░█ ▄▀█ █▀█ ▀█▀ █▀▀ █▀█
@@ -170,8 +169,8 @@ fcvt.b.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 fcvt.h.b    rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
 fcvt.b.h    rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfquarterwithalthalf - quarter-precision conversions with Xfalthalf extension
-fcvt.ah.b  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
-fcvt.b.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.b  fcvt.ah.b  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.h  fcvt.b.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # end_group
 
 
@@ -181,66 +180,54 @@ fcvt.b.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # RV32Xfaltquarter - alternate quarter-precision floats
 # startgroup Xfaltquarter alternate quarter-precision floats
 # ab collides with quad precision (q) so they are pseudo here.
-flab       rd rs1 imm12 14..12=0 6..2=0x01 1..0=3
-fsab       imm12hi rs1 rs2 imm12lo 14..12=0 6..2=0x09 1..0=3
-fmadd.ab   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x10 1..0=3
-fmsub.ab   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x11 1..0=3
-fnmsub.ab  rd rs1 rs2 rs3 rm 26..25=3 6..2=0x12 1..0=3
-fnmadd.ab  rd rs1 rs2 rs3 rm 26..25=3 6..2=0x13 1..0=3
-fadd.ab    rd rs1 rs2      31..27=0x00 rm       26..25=3 6..2=0x14 1..0=3
-fsub.ab    rd rs1 rs2      31..27=0x01 rm       26..25=3 6..2=0x14 1..0=3
-fmul.ab    rd rs1 rs2      31..27=0x02 rm       26..25=3 6..2=0x14 1..0=3
-fdiv.ab    rd rs1 rs2      31..27=0x03 rm       26..25=3 6..2=0x14 1..0=3
-fsqrt.ab   rd rs1 24..20=0 31..27=0x0B rm       26..25=3 6..2=0x14 1..0=3
-fsgnj.ab   rd rs1 rs2      31..27=0x04 14..12=0 26..25=3 6..2=0x14 1..0=3
-fsgnjn.ab  rd rs1 rs2      31..27=0x04 14..12=1 26..25=3 6..2=0x14 1..0=3
-fsgnjx.ab  rd rs1 rs2      31..27=0x04 14..12=2 26..25=3 6..2=0x14 1..0=3
-fmin.ab    rd rs1 rs2      31..27=0x05 14..12=0 26..25=3 6..2=0x14 1..0=3
-fmax.ab    rd rs1 rs2      31..27=0x05 14..12=1 26..25=3 6..2=0x14 1..0=3
-feq.ab     rd rs1 rs2      31..27=0x14 14..12=2 26..25=3 6..2=0x14 1..0=3
-flt.ab     rd rs1 rs2      31..27=0x14 14..12=1 26..25=3 6..2=0x14 1..0=3
-fle.ab     rd rs1 rs2      31..27=0x14 14..12=0 26..25=3 6..2=0x14 1..0=3
-fcvt.w.ab  rd rs1 24..20=0 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-fcvt.wu.ab rd rs1 24..20=1 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-fcvt.ab.w  rd rs1 24..20=0 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-fcvt.ab.wu rd rs1 24..20=1 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-fmv.x.ab   rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=3 6..2=0x14 1..0=3
-fclass.ab  rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=3 6..2=0x14 1..0=3
-fmv.ab.x   rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::flb        flab        rd rs1 imm12 14..12=0 6..2=0x01 1..0=3
+$pseudo_op rv_xsflts::fsb        fsab        imm12hi rs1 rs2 imm12lo 14..12=0 6..2=0x09 1..0=3
+$pseudo_op rv_xsflts::fmadd.b    fmadd.ab    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x10 1..0=3
+$pseudo_op rv_xsflts::fmsub.b    fmsub.ab    rd rs1 rs2 rs3 rm 26..25=3 6..2=0x11 1..0=3
+$pseudo_op rv_xsflts::fnmsub.b   fnmsub.ab   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x12 1..0=3
+$pseudo_op rv_xsflts::fnmadd.b   fnmadd.ab   rd rs1 rs2 rs3 rm 26..25=3 6..2=0x13 1..0=3
+$pseudo_op rv_xsflts::fadd.b     fadd.ab     rd rs1 rs2      31..27=0x00 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fsub.b     fsub.ab     rd rs1 rs2      31..27=0x01 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmul.b     fmul.ab     rd rs1 rs2      31..27=0x02 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fdiv.b     fdiv.ab     rd rs1 rs2      31..27=0x03 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fsqrt.b    fsqrt.ab    rd rs1 24..20=0 31..27=0x0B rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fsgnj.b    fsgnj.ab    rd rs1 rs2      31..27=0x04 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fsgnjn.b   fsgnjn.ab   rd rs1 rs2      31..27=0x04 14..12=1 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fsgnjx.b   fsgnjx.ab   rd rs1 rs2      31..27=0x04 14..12=2 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmin.b     fmin.ab     rd rs1 rs2      31..27=0x05 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmax.b     fmax.ab     rd rs1 rs2      31..27=0x05 14..12=1 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::feq.b      feq.ab      rd rs1 rs2      31..27=0x14 14..12=2 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::flt.b      flt.ab      rd rs1 rs2      31..27=0x14 14..12=1 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fle.b      fle.ab      rd rs1 rs2      31..27=0x14 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.w.b   fcvt.w.ab   rd rs1 24..20=0 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.wu.b  fcvt.wu.ab  rd rs1 24..20=1 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.w   fcvt.ab.w   rd rs1 24..20=0 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.wu  fcvt.ab.wu  rd rs1 24..20=1 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmv.x.b    fmv.x.ab    rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fclass.b   fclass.ab   rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmv.b.x    fmv.ab.x    rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=3 6..2=0x14 1..0=3
 # RV64Xfaltquarter: in addition to the above
-# same as .b:
-fcvt.l.ab  rd rs1 24..20=2 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-# same as .b:
-fcvt.lu.ab rd rs1 24..20=3 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.l  rd rs1 24..20=2 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.lu rd rs1 24..20=3 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.l.b   fcvt.l.ab   rd rs1 24..20=2 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.lu.b  fcvt.lu.ab  rd rs1 24..20=3 31..27=0x18 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.l   fcvt.ab.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.lu  fcvt.ab.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=3 6..2=0x14 1..0=3
 # XfaltquarterwithF - quarter-precision conversions with F extension
-# same as .b:
-fcvt.s.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.s  rd rs1 24..20=0 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.s.b   fcvt.s.ab   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.s   fcvt.ab.s   rd rs1 24..20=0 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # XfaltquarterwithD - quarter-precision conversions with D extension (in addition to XfquarterwithF)
-# same as .b:
-fcvt.d.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.d.b   fcvt.d.ab   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.d   fcvt.ab.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfaltquarterwithhalf - quarter-precision conversions with Xfhalf extension
-# same as .b:
-fcvt.h.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.h  rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.b   fcvt.h.ab   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.h   fcvt.ab.h   rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfaltquarterwithalthalf - quarter-precision conversions with Xfalthalf extension
-# same as .b:
-fcvt.ah.ab rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
-# same as .b:
-fcvt.ab.ah rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.h.b   fcvt.ah.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.h   fcvt.ab.ah  rd rs1 24..20=2 31..27=0x08 rm       26..25=3 6..2=0x14 1..0=3
 # Xfaltquarterwithquarter - quarter-precision conversions with Xfalthalf extension
-fcvt.b.b    rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
-fcvt.ab.b  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
-fcvt.b.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
-fcvt.ab.ab rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
+fcvt.b.b                                     rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.b  fcvt.ab.b   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.b  fcvt.b.ab   rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fcvt.b.b  fcvt.ab.ab  rd rs1 24..20=3 31..27=0x08 14..12=0 26..25=3 6..2=0x14 1..0=3
 # end_group
 
 
@@ -315,12 +302,12 @@ vfcpkb.s.d  rd rs1 rs2        31..30=2 29..25=0x1A 14=1 13..12=0 6..2=0x0C 1..0=
 vfcpkc.s.d  rd rs1 rs2        31..30=2 29..25=0x1B 14=0 13..12=0 6..2=0x0C 1..0=3
 vfcpkd.s.d  rd rs1 rs2        31..30=2 29..25=0x1B 14=1 13..12=0 6..2=0x0C 1..0=3
 # Xfvecalthalfwithhalf - vectorial alternate half-precision conversions with Xfvechalf extension
-vfcvt.h.h     rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvt.h.ah   rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvt.ah.h   rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.h.h    rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.h.ah  rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.ah.h  rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+vfcvt.h.h   rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.h   vfcvt.h.ah   rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.h   vfcvt.ah.h   rd rs1 24..20=5 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+vfcvtu.h.h  rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.h  vfcvtu.h.ah  rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.h  vfcvtu.ah.h  rd rs1 24..20=5 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
 # end_group
 
 # █░█ ▄▀█ █░░ █▀▀
@@ -393,64 +380,64 @@ vfcvtu.h.s  rd rs1 24..20=4 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
 
 # Xfvecalthalf - vectorial alternate half-precision floats - requires FLEN >= 32
 # startgroup Xfvecalthalf vectorial alternate half-precision floats - requires FLEN >= 32
-vfadd.ah     rd rs1 rs2      31..30=2 29..25=0x01 14=0 13..12=2 6..2=0x0C 1..0=3
-vfadd.r.ah   rd rs1 rs2      31..30=2 29..25=0x01 14=1 13..12=2 6..2=0x0C 1..0=3
-vfsub.ah     rd rs1 rs2      31..30=2 29..25=0x02 14=0 13..12=2 6..2=0x0C 1..0=3
-vfsub.r.ah   rd rs1 rs2      31..30=2 29..25=0x02 14=1 13..12=2 6..2=0x0C 1..0=3
-vfmul.ah     rd rs1 rs2      31..30=2 29..25=0x03 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmul.r.ah   rd rs1 rs2      31..30=2 29..25=0x03 14=1 13..12=2 6..2=0x0C 1..0=3
-vfdiv.ah     rd rs1 rs2      31..30=2 29..25=0x04 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdiv.r.ah   rd rs1 rs2      31..30=2 29..25=0x04 14=1 13..12=2 6..2=0x0C 1..0=3
-vfmin.ah     rd rs1 rs2      31..30=2 29..25=0x05 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmin.r.ah   rd rs1 rs2      31..30=2 29..25=0x05 14=1 13..12=2 6..2=0x0C 1..0=3
-vfmax.ah     rd rs1 rs2      31..30=2 29..25=0x06 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmax.r.ah   rd rs1 rs2      31..30=2 29..25=0x06 14=1 13..12=2 6..2=0x0C 1..0=3
-vfsqrt.ah    rd rs1 24..20=0 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmac.ah     rd rs1 rs2      31..30=2 29..25=0x08 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmac.r.ah   rd rs1 rs2      31..30=2 29..25=0x08 14=1 13..12=2 6..2=0x0C 1..0=3
-vfmre.ah     rd rs1 rs2      31..30=2 29..25=0x09 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmre.r.ah   rd rs1 rs2      31..30=2 29..25=0x09 14=1 13..12=2 6..2=0x0C 1..0=3
-vfclass.ah   rd rs1 24..20=1 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfsgnj.ah    rd rs1 rs2      31..30=2 29..25=0x0D 14=0 13..12=2 6..2=0x0C 1..0=3
-vfsgnj.r.ah  rd rs1 rs2      31..30=2 29..25=0x0D 14=1 13..12=2 6..2=0x0C 1..0=3
-vfsgnjn.ah   rd rs1 rs2      31..30=2 29..25=0x0E 14=0 13..12=2 6..2=0x0C 1..0=3
-vfsgnjn.r.ah rd rs1 rs2      31..30=2 29..25=0x0E 14=1 13..12=2 6..2=0x0C 1..0=3
-vfsgnjx.ah   rd rs1 rs2      31..30=2 29..25=0x0F 14=0 13..12=2 6..2=0x0C 1..0=3
-vfsgnjx.r.ah rd rs1 rs2      31..30=2 29..25=0x0F 14=1 13..12=2 6..2=0x0C 1..0=3
-vfeq.ah      rd rs1 rs2      31..30=2 29..25=0x10 14=0 13..12=2 6..2=0x0C 1..0=3
-vfeq.r.ah    rd rs1 rs2      31..30=2 29..25=0x10 14=1 13..12=2 6..2=0x0C 1..0=3
-vfne.ah      rd rs1 rs2      31..30=2 29..25=0x11 14=0 13..12=2 6..2=0x0C 1..0=3
-vfne.r.ah    rd rs1 rs2      31..30=2 29..25=0x11 14=1 13..12=2 6..2=0x0C 1..0=3
-vflt.ah      rd rs1 rs2      31..30=2 29..25=0x12 14=0 13..12=2 6..2=0x0C 1..0=3
-vflt.r.ah    rd rs1 rs2      31..30=2 29..25=0x12 14=1 13..12=2 6..2=0x0C 1..0=3
-vfge.ah      rd rs1 rs2      31..30=2 29..25=0x13 14=0 13..12=2 6..2=0x0C 1..0=3
-vfge.r.ah    rd rs1 rs2      31..30=2 29..25=0x13 14=1 13..12=2 6..2=0x0C 1..0=3
-vfle.ah      rd rs1 rs2      31..30=2 29..25=0x14 14=0 13..12=2 6..2=0x0C 1..0=3
-vfle.r.ah    rd rs1 rs2      31..30=2 29..25=0x14 14=1 13..12=2 6..2=0x0C 1..0=3
-vfgt.ah      rd rs1 rs2      31..30=2 29..25=0x15 14=0 13..12=2 6..2=0x0C 1..0=3
-vfgt.r.ah    rd rs1 rs2      31..30=2 29..25=0x15 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfadd.h      vfadd.ah      rd rs1 rs2      31..30=2 29..25=0x01 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfadd.r.h    vfadd.r.ah    rd rs1 rs2      31..30=2 29..25=0x01 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsub.h      vfsub.ah      rd rs1 rs2      31..30=2 29..25=0x02 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsub.r.h    vfsub.r.ah    rd rs1 rs2      31..30=2 29..25=0x02 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmul.h      vfmul.ah      rd rs1 rs2      31..30=2 29..25=0x03 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmul.r.h    vfmul.r.ah    rd rs1 rs2      31..30=2 29..25=0x03 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdiv.h      vfdiv.ah      rd rs1 rs2      31..30=2 29..25=0x04 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdiv.r.h    vfdiv.r.ah    rd rs1 rs2      31..30=2 29..25=0x04 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmin.h      vfmin.ah      rd rs1 rs2      31..30=2 29..25=0x05 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmin.r.h    vfmin.r.ah    rd rs1 rs2      31..30=2 29..25=0x05 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmax.h      vfmax.ah      rd rs1 rs2      31..30=2 29..25=0x06 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmax.r.h    vfmax.r.ah    rd rs1 rs2      31..30=2 29..25=0x06 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsqrt.h     vfsqrt.ah     rd rs1 24..20=0 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmac.h      vfmac.ah      rd rs1 rs2      31..30=2 29..25=0x08 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmac.r.h    vfmac.r.ah    rd rs1 rs2      31..30=2 29..25=0x08 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmre.h      vfmre.ah      rd rs1 rs2      31..30=2 29..25=0x09 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmre.r.h    vfmre.r.ah    rd rs1 rs2      31..30=2 29..25=0x09 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfclass.h    vfclass.ah    rd rs1 24..20=1 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnj.h     vfsgnj.ah     rd rs1 rs2      31..30=2 29..25=0x0D 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnj.r.h   vfsgnj.r.ah   rd rs1 rs2      31..30=2 29..25=0x0D 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjn.h    vfsgnjn.ah    rd rs1 rs2      31..30=2 29..25=0x0E 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjn.r.h  vfsgnjn.r.ah  rd rs1 rs2      31..30=2 29..25=0x0E 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjx.h    vfsgnjx.ah    rd rs1 rs2      31..30=2 29..25=0x0F 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjx.r.h  vfsgnjx.r.ah  rd rs1 rs2      31..30=2 29..25=0x0F 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfeq.h       vfeq.ah       rd rs1 rs2      31..30=2 29..25=0x10 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfeq.r.h     vfeq.r.ah     rd rs1 rs2      31..30=2 29..25=0x10 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfne.h       vfne.ah       rd rs1 rs2      31..30=2 29..25=0x11 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfne.r.h     vfne.r.ah     rd rs1 rs2      31..30=2 29..25=0x11 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vflt.h       vflt.ah       rd rs1 rs2      31..30=2 29..25=0x12 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vflt.r.h     vflt.r.ah     rd rs1 rs2      31..30=2 29..25=0x12 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfge.h       vfge.ah       rd rs1 rs2      31..30=2 29..25=0x13 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfge.r.h     vfge.r.ah     rd rs1 rs2      31..30=2 29..25=0x13 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfle.h       vfle.ah       rd rs1 rs2      31..30=2 29..25=0x14 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfle.r.h     vfle.r.ah     rd rs1 rs2      31..30=2 29..25=0x14 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfgt.h       vfgt.ah       rd rs1 rs2      31..30=2 29..25=0x15 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfgt.r.h     vfgt.r.ah     rd rs1 rs2      31..30=2 29..25=0x15 14=1 13..12=2 6..2=0x0C 1..0=3
 # XfvechalfnothirtytwoD: only unless RV32D
-vfmv.x.ah    rd rs1 24..20=0 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfmv.ah.x    rd rs1 24..20=0 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvt.x.ah   rd rs1 24..20=2 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvt.xu.ah  rd rs1 24..20=2 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvt.ah.x   rd rs1 24..20=3 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvt.ah.xu  rd rs1 24..20=3 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmv.x.h     vfmv.x.ah     rd rs1 24..20=0 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmv.h.x     vfmv.ah.x     rd rs1 24..20=0 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.x.h    vfcvt.x.ah    rd rs1 24..20=2 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.xu.h   vfcvt.xu.ah   rd rs1 24..20=2 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.x    vfcvt.ah.x    rd rs1 24..20=3 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.xu   vfcvt.ah.xu   rd rs1 24..20=3 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
 # XfvechalfwithF - vectorial half-precision conversions with F extension, a-d legality depends on FLEN
-vfcpka.ah.s  rd rs1 rs2      31..30=2 29..25=0x18 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcpkb.ah.s  rd rs1 rs2      31..30=2 29..25=0x18 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcpkc.ah.s  rd rs1 rs2      31..30=2 29..25=0x19 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcpkd.ah.s  rd rs1 rs2      31..30=2 29..25=0x19 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpka.h.s   vfcpka.ah.s   rd rs1 rs2      31..30=2 29..25=0x18 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkb.h.s   vfcpkb.ah.s   rd rs1 rs2      31..30=2 29..25=0x18 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkc.h.s   vfcpkc.ah.s   rd rs1 rs2      31..30=2 29..25=0x19 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkd.h.s   vfcpkd.ah.s   rd rs1 rs2      31..30=2 29..25=0x19 14=1 13..12=2 6..2=0x0C 1..0=3
 # XfvechalfwithD - vectorial half-precision conversions with D extension, a-d legality depends on FLEN (in addition to the above)
-vfcpka.ah.d  rd rs1 rs2      31..30=2 29..25=0x1A 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcpkb.ah.d  rd rs1 rs2      31..30=2 29..25=0x1A 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcpkc.ah.d  rd rs1 rs2      31..30=2 29..25=0x1B 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcpkd.ah.d  rd rs1 rs2      31..30=2 29..25=0x1B 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpka.h.d   vfcpka.ah.d   rd rs1 rs2      31..30=2 29..25=0x1A 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkb.h.d   vfcpkb.ah.d   rd rs1 rs2      31..30=2 29..25=0x1A 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkc.h.d   vfcpkc.ah.d   rd rs1 rs2      31..30=2 29..25=0x1B 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkd.h.d   vfcpkd.ah.d   rd rs1 rs2      31..30=2 29..25=0x1B 14=1 13..12=2 6..2=0x0C 1..0=3
 # Xfvecalthalfwithsingle - vectorial half-precision conversions with Xfvecsingle extension
-vfcvt.s.ah   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=0 6..2=0x0C 1..0=3
-vfcvtu.s.ah  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=0 6..2=0x0C 1..0=3
-vfcvt.ah.s   rd rs1 24..20=4 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.ah.s  rd rs1 24..20=4 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.s.h    vfcvt.s.ah    rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.s.h   vfcvtu.s.ah   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.s    vfcvt.ah.s    rd rs1 24..20=4 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.s   vfcvtu.ah.s   rd rs1 24..20=4 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
 # end_group
 
 # █▀█ █░█ ▄▀█ █▀█ ▀█▀ █▀▀ █▀█
@@ -522,17 +509,17 @@ vfcvtu.h.b  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
 vfcvt.b.h   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
 vfcvtu.b.h  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # Xfvecquarterwithalthalf - vectorial quarter-precision conversions with Xfvecalthalf extension
-vfcvt.ah.b  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.ah.b rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvt.b.ah  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.b.ah rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.b   vfcvt.ah.b  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.b  vfcvtu.ah.b rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.h   vfcvt.b.ah  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.h  vfcvtu.b.ah rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # Xfvecquarterwithhalf - vectorial quarter-precision conversions with Xfvechalf extension
 vfcvt.b.b    rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvt.ab.b  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvt.b.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.b   vfcvt.ab.b   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.b   vfcvt.b.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
 vfcvtu.b.b   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.ab.b rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.b.ab rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.b  vfcvtu.ab.b  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.b  vfcvtu.b.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # end_group
 
 
@@ -541,74 +528,74 @@ vfcvtu.b.ab rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 
 # Xfvecaltquarter - vectorial alternative quarter-precision floats - requires FLEN >= 16
 # startgroup Xfvecaltquarter vectorial alternative quarter-precision floats - requires FLEN >= 16
-vfadd.ab     rd rs1 rs2      31..30=2 29..25=0x01 14=0 13..12=3 6..2=0x0C 1..0=3
-vfadd.r.ab   rd rs1 rs2      31..30=2 29..25=0x01 14=1 13..12=3 6..2=0x0C 1..0=3
-vfsub.ab     rd rs1 rs2      31..30=2 29..25=0x02 14=0 13..12=3 6..2=0x0C 1..0=3
-vfsub.r.ab   rd rs1 rs2      31..30=2 29..25=0x02 14=1 13..12=3 6..2=0x0C 1..0=3
-vfmul.ab     rd rs1 rs2      31..30=2 29..25=0x03 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmul.r.ab   rd rs1 rs2      31..30=2 29..25=0x03 14=1 13..12=3 6..2=0x0C 1..0=3
-vfdiv.ab     rd rs1 rs2      31..30=2 29..25=0x04 14=0 13..12=3 6..2=0x0C 1..0=3
-vfdiv.r.ab   rd rs1 rs2      31..30=2 29..25=0x04 14=1 13..12=3 6..2=0x0C 1..0=3
-vfmin.ab     rd rs1 rs2      31..30=2 29..25=0x05 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmin.r.ab   rd rs1 rs2      31..30=2 29..25=0x05 14=1 13..12=3 6..2=0x0C 1..0=3
-vfmax.ab     rd rs1 rs2      31..30=2 29..25=0x06 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmax.r.ab   rd rs1 rs2      31..30=2 29..25=0x06 14=1 13..12=3 6..2=0x0C 1..0=3
-vfsqrt.ab    rd rs1 24..20=0 31..30=2 29..25=0x07 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmac.ab     rd rs1 rs2      31..30=2 29..25=0x08 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmac.r.ab   rd rs1 rs2      31..30=2 29..25=0x08 14=1 13..12=3 6..2=0x0C 1..0=3
-vfmre.ab     rd rs1 rs2      31..30=2 29..25=0x09 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmre.r.ab   rd rs1 rs2      31..30=2 29..25=0x09 14=1 13..12=3 6..2=0x0C 1..0=3
-vfsgnj.ab    rd rs1 rs2      31..30=2 29..25=0x0D 14=0 13..12=3 6..2=0x0C 1..0=3
-vfsgnj.r.ab  rd rs1 rs2      31..30=2 29..25=0x0D 14=1 13..12=3 6..2=0x0C 1..0=3
-vfsgnjn.ab   rd rs1 rs2      31..30=2 29..25=0x0E 14=0 13..12=3 6..2=0x0C 1..0=3
-vfsgnjn.r.ab rd rs1 rs2      31..30=2 29..25=0x0E 14=1 13..12=3 6..2=0x0C 1..0=3
-vfsgnjx.ab   rd rs1 rs2      31..30=2 29..25=0x0F 14=0 13..12=3 6..2=0x0C 1..0=3
-vfsgnjx.r.ab rd rs1 rs2      31..30=2 29..25=0x0F 14=1 13..12=3 6..2=0x0C 1..0=3
-vfeq.ab      rd rs1 rs2      31..30=2 29..25=0x10 14=0 13..12=3 6..2=0x0C 1..0=3
-vfeq.r.ab    rd rs1 rs2      31..30=2 29..25=0x10 14=1 13..12=3 6..2=0x0C 1..0=3
-vfne.ab      rd rs1 rs2      31..30=2 29..25=0x11 14=0 13..12=3 6..2=0x0C 1..0=3
-vfne.r.ab    rd rs1 rs2      31..30=2 29..25=0x11 14=1 13..12=3 6..2=0x0C 1..0=3
-vflt.ab      rd rs1 rs2      31..30=2 29..25=0x12 14=0 13..12=3 6..2=0x0C 1..0=3
-vflt.r.ab    rd rs1 rs2      31..30=2 29..25=0x12 14=1 13..12=3 6..2=0x0C 1..0=3
-vfge.ab      rd rs1 rs2      31..30=2 29..25=0x13 14=0 13..12=3 6..2=0x0C 1..0=3
-vfge.r.ab    rd rs1 rs2      31..30=2 29..25=0x13 14=1 13..12=3 6..2=0x0C 1..0=3
-vfle.ab      rd rs1 rs2      31..30=2 29..25=0x14 14=0 13..12=3 6..2=0x0C 1..0=3
-vfle.r.ab    rd rs1 rs2      31..30=2 29..25=0x14 14=1 13..12=3 6..2=0x0C 1..0=3
-vfgt.ab      rd rs1 rs2      31..30=2 29..25=0x15 14=0 13..12=3 6..2=0x0C 1..0=3
-vfgt.r.ab    rd rs1 rs2      31..30=2 29..25=0x15 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfadd.b      vfadd.ab      rd rs1 rs2      31..30=2 29..25=0x01 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfadd.r.b    vfadd.r.ab    rd rs1 rs2      31..30=2 29..25=0x01 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsub.b      vfsub.ab      rd rs1 rs2      31..30=2 29..25=0x02 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsub.r.b    vfsub.r.ab    rd rs1 rs2      31..30=2 29..25=0x02 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmul.b      vfmul.ab      rd rs1 rs2      31..30=2 29..25=0x03 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmul.r.b    vfmul.r.ab    rd rs1 rs2      31..30=2 29..25=0x03 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdiv.b      vfdiv.ab      rd rs1 rs2      31..30=2 29..25=0x04 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdiv.r.b    vfdiv.r.ab    rd rs1 rs2      31..30=2 29..25=0x04 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmin.b      vfmin.ab      rd rs1 rs2      31..30=2 29..25=0x05 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmin.r.b    vfmin.r.ab    rd rs1 rs2      31..30=2 29..25=0x05 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmax.b      vfmax.ab      rd rs1 rs2      31..30=2 29..25=0x06 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmax.r.b    vfmax.r.ab    rd rs1 rs2      31..30=2 29..25=0x06 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsqrt.b     vfsqrt.ab     rd rs1 24..20=0 31..30=2 29..25=0x07 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmac.b      vfmac.ab      rd rs1 rs2      31..30=2 29..25=0x08 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmac.r.b    vfmac.r.ab    rd rs1 rs2      31..30=2 29..25=0x08 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmre.b      vfmre.ab      rd rs1 rs2      31..30=2 29..25=0x09 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmre.r.b    vfmre.r.ab    rd rs1 rs2      31..30=2 29..25=0x09 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnj.b     vfsgnj.ab     rd rs1 rs2      31..30=2 29..25=0x0D 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnj.r.b   vfsgnj.r.ab   rd rs1 rs2      31..30=2 29..25=0x0D 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjn.b    vfsgnjn.ab    rd rs1 rs2      31..30=2 29..25=0x0E 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjn.r.b  vfsgnjn.r.ab  rd rs1 rs2      31..30=2 29..25=0x0E 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjx.b    vfsgnjx.ab    rd rs1 rs2      31..30=2 29..25=0x0F 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsgnjx.r.b  vfsgnjx.r.ab  rd rs1 rs2      31..30=2 29..25=0x0F 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfeq.b       vfeq.ab       rd rs1 rs2      31..30=2 29..25=0x10 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfeq.r.b     vfeq.r.ab     rd rs1 rs2      31..30=2 29..25=0x10 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfne.b       vfne.ab       rd rs1 rs2      31..30=2 29..25=0x11 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfne.r.b     vfne.r.ab     rd rs1 rs2      31..30=2 29..25=0x11 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vflt.b       vflt.ab       rd rs1 rs2      31..30=2 29..25=0x12 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vflt.r.b     vflt.r.ab     rd rs1 rs2      31..30=2 29..25=0x12 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfge.b       vfge.ab       rd rs1 rs2      31..30=2 29..25=0x13 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfge.r.b     vfge.r.ab     rd rs1 rs2      31..30=2 29..25=0x13 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfle.b       vfle.ab       rd rs1 rs2      31..30=2 29..25=0x14 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfle.r.b     vfle.r.ab     rd rs1 rs2      31..30=2 29..25=0x14 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfgt.b       vfgt.ab       rd rs1 rs2      31..30=2 29..25=0x15 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfgt.r.b     vfgt.r.ab     rd rs1 rs2      31..30=2 29..25=0x15 14=1 13..12=3 6..2=0x0C 1..0=3
 # XfvecquarternothirtytwoD: only unless RV32D
-vfmv.x.ab    rd rs1 24..20=0 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfmv.ab.x    rd rs1 24..20=0 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
-vfclass.ab   rd rs1 24..20=1 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvt.x.ab   rd rs1 24..20=2 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvt.xu.ab  rd rs1 24..20=2 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
-vfcvt.ab.x   rd rs1 24..20=3 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvt.ab.xu  rd rs1 24..20=3 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmv.x.b     vfmv.x.ab     rd rs1 24..20=0 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfmv.b.x     vfmv.ab.x     rd rs1 24..20=0 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfclass.b    vfclass.ab    rd rs1 24..20=1 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.x.b    vfcvt.x.ab    rd rs1 24..20=2 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.xu.b   vfcvt.xu.ab   rd rs1 24..20=2 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.x    vfcvt.ab.x    rd rs1 24..20=3 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.xu   vfcvt.ab.xu   rd rs1 24..20=3 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # XfvecquarterwithF - vectorial quarter-precision conversions with F extension, a-d legality depends on FLEN
-vfcpka.ab.s  rd rs1 rs2      31..30=2 29..25=0x18 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcpkb.ab.s  rd rs1 rs2      31..30=2 29..25=0x18 14=1 13..12=3 6..2=0x0C 1..0=3
-vfcpkc.ab.s  rd rs1 rs2      31..30=2 29..25=0x19 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcpkd.ab.s  rd rs1 rs2      31..30=2 29..25=0x19 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpka.b.s   vfcpka.ab.s   rd rs1 rs2      31..30=2 29..25=0x18 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkb.b.s   vfcpkb.ab.s   rd rs1 rs2      31..30=2 29..25=0x18 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkc.b.s   vfcpkc.ab.s   rd rs1 rs2      31..30=2 29..25=0x19 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkd.b.s   vfcpkd.ab.s   rd rs1 rs2      31..30=2 29..25=0x19 14=1 13..12=3 6..2=0x0C 1..0=3
 # XfvecquarterwithD - vectorial quarter-precision conversions with D extension, a-d legality depends on FLEN (in addition to above)
-vfcpka.ab.d  rd rs1 rs2      31..30=2 29..25=0x1A 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcpkb.ab.d  rd rs1 rs2      31..30=2 29..25=0x1A 14=1 13..12=3 6..2=0x0C 1..0=3
-vfcpkc.ab.d  rd rs1 rs2      31..30=2 29..25=0x1B 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcpkd.ab.d  rd rs1 rs2      31..30=2 29..25=0x1B 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpka.b.d   vfcpka.ab.d   rd rs1 rs2      31..30=2 29..25=0x1A 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkb.b.d   vfcpkb.ab.d   rd rs1 rs2      31..30=2 29..25=0x1A 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkc.b.d   vfcpkc.ab.d   rd rs1 rs2      31..30=2 29..25=0x1B 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcpkd.b.d   vfcpkd.ab.d   rd rs1 rs2      31..30=2 29..25=0x1B 14=1 13..12=3 6..2=0x0C 1..0=3
 # Xfvecquarterwithsingle - vectorial quarter-precision conversions with Xfvecsingle extension
-vfcvt.s.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=0 6..2=0x0C 1..0=3
-vfcvtu.s.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=0 6..2=0x0C 1..0=3
-vfcvt.ab.s   rd rs1 24..20=4 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.ab.s  rd rs1 24..20=4 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.s.b    vfcvt.s.ab    rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.s.b   vfcvtu.s.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.s    vfcvt.ab.s    rd rs1 24..20=4 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.s   vfcvtu.ab.s   rd rs1 24..20=4 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # Xfvecquarterwithhalf - vectorial quarter-precision conversions with Xfvechalf extension
-vfcvt.h.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.h.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvt.ab.h   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.ab.h  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.b    vfcvt.h.ab    rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.b   vfcvtu.h.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.h    vfcvt.ab.h    rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.h   vfcvtu.ab.h   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # Xfvecquarterwithalthalf - vectorial quarter-precision conversions with Xfvecalthalf extension
-vfcvt.ah.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
-vfcvtu.ah.ab rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
-vfcvt.ab.ah  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
-vfcvtu.ab.ah rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.h.b    vfcvt.ah.ab   rd rs1 24..20=7 31..30=2 29..25=0x0C 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.h.b   vfcvtu.ah.ab  rd rs1 24..20=7 31..30=2 29..25=0x0C 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvt.b.h    vfcvt.ab.ah   rd rs1 24..20=6 31..30=2 29..25=0x0C 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfcvtu.b.h   vfcvtu.ab.ah  rd rs1 24..20=6 31..30=2 29..25=0x0C 14=1 13..12=3 6..2=0x0C 1..0=3
 # end_group
 
 # ░█████╗░██╗░░░██╗██╗░░██╗██╗██╗░░░░░██╗░█████╗░██████╗░██╗░░░██╗
@@ -643,8 +630,8 @@ fmacex.s.h      rd rs1 rs2         31..27=0x0A rm       26..25=2 6..2=0x14 1..0=
 
 # Xfauxalthalf - alternate half-precision auxiliary operations - requires Xfalthalf extension
 # startgroup Xfauxalthalf alternate half-precision auxiliary operations - requires Xfalthalf extension
-fmulex.s.ah     rd rs1 rs2         31..27=0x09 rm       26..25=2 6..2=0x14 1..0=3
-fmacex.s.ah     rd rs1 rs2         31..27=0x0A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmulex.s.h fmulex.s.ah     rd rs1 rs2         31..27=0x09 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmacex.s.h fmacex.s.ah     rd rs1 rs2         31..27=0x0A rm       26..25=2 6..2=0x14 1..0=3
 # end_group
 
 # █▀█ █░█ ▄▀█ █▀█ ▀█▀ █▀▀ █▀█
@@ -661,8 +648,8 @@ fmacex.s.b        rd rs1 rs2     31..27=0x0A rm       26..25=3 6..2=0x14 1..0=3
 
 # Xfauxaltquarter - alternate quarter-precision auxiliary operations - requires Xfaltquarter extension
 # startgroup Xfauxaltquarter alternate quarter-precision auxiliary operations - requires Xfaltquarter extension
-fmulex.s.ab rd rs1 rs2     31..27=0x09 rm       26..25=3 6..2=0x14 1..0=3
-fmacex.s.ab rd rs1 rs2     31..27=0x0A rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmulex.s.b fmulex.s.ab rd rs1 rs2     31..27=0x09 rm       26..25=3 6..2=0x14 1..0=3
+$pseudo_op rv_xsflts::fmacex.s.b fmacex.s.ab rd rs1 rs2     31..27=0x0A rm       26..25=3 6..2=0x14 1..0=3
 
 # ░█████╗░██╗░░░██╗██╗░░██╗  ██╗░░░██╗███████╗░█████╗░████████╗░█████╗░██████╗░
 # ██╔══██╗██║░░░██║╚██╗██╔╝  ██║░░░██║██╔════╝██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗
@@ -702,8 +689,8 @@ vfnsum.h        rd rs1 24..20=0x1E 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 
 
 # Xfauxvecalthalf - vectorial alternate half-precision auxiliary operations - requires Xfvecalthalf extension
 # startgroup Xfauxvecalthalf - vectorial alternate half-precision auxiliary operations - requires Xfvecalthalf extension
-vfsum.ah        rd rs1 24..20=0x1E 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
-vfnsum.ah       rd rs1 24..20=0x1E 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsum.h   vfsum.ah   rd rs1 24..20=0x1E 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsum.h  vfnsum.ah  rd rs1 24..20=0x1E 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
 #vfdotp.ah        rd rs1 rs2        31..30=2 29..25=0x0A 14=0 13..12=2 6..2=0x0C 1..0=3
 #vfdotp.r.ah      rd rs1 rs2        31..30=2 29..25=0x0A 14=1 13..12=2 6..2=0x0C 1..0=3
 #vfavg.ah         rd rs1 rs2        31..30=2 29..25=0x16 14=0 13..12=2 6..2=0x0C 1..0=3
@@ -728,8 +715,8 @@ vfnsum.b         rd rs1 24..20=0x07 31..30=2 29..25=0x17 14=0 13..12=3 6..2=0x0C
 
 # Xfauxvecaltquarter & Xfauxvechalf - vectorial alternate quarter-precision auxiliary operations - requires Xfvecaltquarter extension
 # startgroup Xfauxvecaltquarter - vectorial alternate quarter-precision auxiliary operations - requires Xfvecaltquarter extension
-vfsum.ab         rd rs1 24..20=0x07 31..30=2 29..25=0x07 14=0 13..12=3 6..2=0x0C 1..0=3
-vfnsum.ab        rd rs1 24..20=0x07 31..30=2 29..25=0x17 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsum.b   vfsum.ab   rd rs1 24..20=0x07 31..30=2 29..25=0x07 14=0 13..12=3 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsum.b  vfnsum.ab  rd rs1 24..20=0x07 31..30=2 29..25=0x17 14=0 13..12=3 6..2=0x0C 1..0=3
 #vfdotp.ab        rd rs1 rs2         31..30=2 29..25=0x0A 14=0 13..12=3 6..2=0x0C 1..0=3
 #vfdotp.r.ab      rd rs1 rs2         31..30=2 29..25=0x0A 14=1 13..12=3 6..2=0x0C 1..0=3
 #vfavg.ab         rd rs1 rs2         31..30=2 29..25=0x16 14=0 13..12=3 6..2=0x0C 1..0=3
@@ -761,12 +748,12 @@ vfndotpex.s.r.h rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=0 6..2=0x0C 
 
 # Xfexpauxvecalthalf - vectorial alternate half-precision expanding auxiliary operations
 # startgroup Xfexpauxvecalthalf vectorial alternate half-precision expanding auxiliary operations
-vfsumex.s.ah    rd rs1 24..20=0x16 31..30=2 29..25=0x07 14=0 13..12=0 6..2=0x0C 1..0=3
-vfnsumex.s.ah   rd rs1 24..20=0x16 31..30=2 29..25=0x17 14=0 13..12=0 6..2=0x0C 1..0=3
-vfdotpex.s.ah    rd rs1 rs2        31..30=2 29..25=0x0B 14=0 13..12=0 6..2=0x0C 1..0=3
-vfdotpex.s.r.ah  rd rs1 rs2        31..30=2 29..25=0x0B 14=1 13..12=0 6..2=0x0C 1..0=3
-vfndotpex.s.ah   rd rs1 rs2        31..30=2 29..25=0x1D 14=0 13..12=0 6..2=0x0C 1..0=3
-vfndotpex.s.r.ah rd rs1 rs2        31..30=2 29..25=0x1D 14=1 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsumex.s.h      vfsumex.s.ah      rd rs1 24..20=0x16 31..30=2 29..25=0x07 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsumex.s.h     vfnsumex.s.ah     rd rs1 24..20=0x16 31..30=2 29..25=0x17 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.s.h     vfdotpex.s.ah     rd rs1 rs2        31..30=2 29..25=0x0B 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.s.r.h   vfdotpex.s.r.ah   rd rs1 rs2        31..30=2 29..25=0x0B 14=1 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.s.h    vfndotpex.s.ah    rd rs1 rs2        31..30=2 29..25=0x1D 14=0 13..12=0 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.s.r.h  vfndotpex.s.r.ah  rd rs1 rs2        31..30=2 29..25=0x1D 14=1 13..12=0 6..2=0x0C 1..0=3
 # end_group
 
 # █▀█ █░█ ▄▀█ █▀█ ▀█▀ █▀▀ █▀█
@@ -780,12 +767,12 @@ vfdotpex.h.b     rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C
 vfdotpex.h.r.b   rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
 vfndotpex.h.b    rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
 vfndotpex.h.r.b  rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
-vfsumex.ah.b      rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
-vfnsumex.ah.b     rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.ah.b     rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.ah.r.b   rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.ah.b    rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.ah.r.b  rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsumex.h.b      vfsumex.ah.b      rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsumex.h.b     vfnsumex.ah.b     rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.b     vfdotpex.ah.b     rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.r.b   vfdotpex.ah.r.b   rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.b    vfndotpex.ah.b    rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.r.b  vfndotpex.ah.r.b  rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
 # end_group
 
 # ▄▀█ █░░ ▀█▀ █▀▀ █▀█ █▄░█ ▄▀█ ▀█▀ █▀▀   █▀█ █░█ ▄▀█ █▀█ ▀█▀ █▀▀ █▀█
@@ -793,17 +780,17 @@ vfndotpex.ah.r.b  rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0
 
 # Xfexpauxvecaltquarter - vectorial alternate quarter-precision expanding auxiliary operations
 # startgroup Xfexpauxvecaltquarter vectorial alternate quarter-precision expanding auxiliary operations
-vfsumex.h.ab     rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
-vfnsumex.h.ab    rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.h.ab    rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.h.r.ab  rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.h.ab   rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.h.r.ab rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsumex.h.b      vfsumex.h.ab       rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsumex.h.b     vfnsumex.h.ab      rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.b     vfdotpex.h.ab      rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.r.b   vfdotpex.h.r.ab    rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.b    vfndotpex.h.ab     rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.r.b  vfndotpex.h.r.ab   rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
 # Same with alternate half destination
-vfsumex.ah.ab     rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
-vfnsumex.ah.ab    rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.ah.ab    rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
-vfdotpex.ah.r.ab  rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.ah.ab   rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
-vfndotpex.ah.r.ab rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfsumex.h.b      vfsumex.ah.ab      rd rs1 24..20=0x17 31..30=2 29..25=0x07 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfnsumex.h.b     vfnsumex.ah.ab     rd rs1 24..20=0x17 31..30=2 29..25=0x17 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.b     vfdotpex.ah.ab     rd rs1 rs2         31..30=2 29..25=0x0B 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfdotpex.h.r.b   vfdotpex.ah.r.ab   rd rs1 rs2         31..30=2 29..25=0x0B 14=1 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.b    vfndotpex.ah.ab    rd rs1 rs2         31..30=2 29..25=0x1D 14=0 13..12=2 6..2=0x0C 1..0=3
+$pseudo_op rv_xsflts::vfndotpex.h.r.b  vfndotpex.ah.r.ab  rd rs1 rs2         31..30=2 29..25=0x1D 14=1 13..12=2 6..2=0x0C 1..0=3
 # endgroup
