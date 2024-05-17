@@ -5,7 +5,8 @@ import yaml
 import sys
 import argparse
 import jinja2
-from typing import Set, Self, Any
+import logging as log
+from typing import Set, Self, Any, List, Tuple
 from enum import Enum, IntEnum, auto, unique
 from dataclasses import dataclass, asdict
 
@@ -20,10 +21,22 @@ def is_vector(mnemonic: str) -> bool:
     return mnemonic.startswith(("V", "v"))
 
 
+def extension_to_decoderns(ext: str) -> str:
+    return ext
+
+
+def extension_to_defprefix(ext: str) -> str:
+    return ext.upper() + "_"
+
+
+def extension_to_encoding_filename(ext: str) -> str:
+    return "rv_" + ext.lower()
+
+
 @unique
 class DataType(Enum):
     f8 = "B"
-    f8alt = "AB"  # bfloat8?
+    f8alt = "AB"
     f16 = "H"
     f16alt = "AH"  # bfloat16
     f32 = "S"
@@ -177,6 +190,10 @@ def {{def}} : RVInstR<
                 Sched<[]>;
 """
 
+TBLGEN_ALIAS_TEMPLATE_R = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2), 0>;
+"""
+
 TBLGEN_TEMPLATE_IIMM12 = """
 {% if properties -%}
 let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
@@ -188,6 +205,10 @@ def {{def}} : RVInstI<
                 (ins {{dtype["rs1"]}}:$rs1, simm12:$imm12),
                 "{{mnemonic}}", "$rd, $rs1, ${imm12}(${rs1})">,
                 Sched<[]>;
+"""
+
+TBLGEN_ALIAS_TEMPLATE_IIMM12 = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $imm12", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, simm12:$imm12), 0>;
 """
 
 TBLGEN_TEMPLATE_SIMM12 = """
@@ -203,6 +224,10 @@ def {{def}} : RVInstS<
                 Sched<[]>;
 """
 
+TBLGEN_ALIAS_TEMPLATE_SIMM12 = """
+def : InstAlias<"{{mnemonic}} $rs2, $rs1, $imm12", ({{use}} {{dtype["rs2"]}}:$rs2, {{dtype["rs1"]}}:$rs1, simm12:$imm12), 0>;
+"""
+
 TBLGEN_TEMPLATE_R4 = """
 {% if properties -%}
 let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
@@ -215,6 +240,10 @@ def {{def}} : RVInstR4<
                 (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3),
                 "{{mnemonic}}", "$rd, $rs1, $rs2, $rs3">,
                 Sched<[]>;
+"""
+
+TBLGEN_ALIAS_TEMPLATE_R4 = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3", ({{use}}  {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3), 0>;
 """
 
 TBLGEN_TEMPLATE_R4FRM = """
@@ -232,6 +261,10 @@ def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3",
                ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rd"]}}:$rs3, FRM_DYN)>;
 """
 
+TBLGEN_ALIAS_TEMPLATE_R4FRM = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2, $rs3, frmarg:$frm", ({{use}}  {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, {{dtype["rs3"]}}:$rs3, frmarg:$frm), 0>;
+"""
+
 TBLGEN_TEMPLATE_RFRM = """
 {% if properties -%}
 let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
@@ -245,6 +278,10 @@ def {{def}} : RVInstRFrm<
                 Sched<[]>;
 def: InstAlias<"{{mnemonic}} $rd, $rs1, $rs2",
                ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, FRM_DYN)>;
+"""
+
+TBLGEN_ALIAS_TEMPLATE_RFRM = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2", ({{use}}  {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2, FRM_DYN), 0>;
 """
 
 TBLGEN_TEMPLATE_RVF = """
@@ -261,6 +298,10 @@ def {{def}} : RVInstRVf<
                 (ins {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2),
                 "{{mnemonic}}", "$rd, $rs1, $rs2">,
                 Sched<[]>;
+"""
+
+TBLGEN_ALIAS_TEMPLATE_RVF = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1, $rs2", ({{use}}  {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, {{dtype["rs2"]}}:$rs2), 0>;
 """
 
 TBLGEN_TEMPLATE_IVF = """
@@ -280,6 +321,10 @@ def {{def}} : RVInstRVf<
                 { let rs2 = {{rs2}}; }
 """
 
+TBLGEN_ALIAS_TEMPLATE_IVF = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1), 0>;
+"""
+
 TBLGEN_TEMPLATE_IFRM = """
 {% if properties -%}
 let {% for key, value in properties.items() %}{{key}} = {{value}}{{ ", " if not loop.last else "" }}{% endfor %} in
@@ -294,6 +339,10 @@ def {{def}} : RVInstRFrm<
                 { let rs2 = {{rs2}}; }
 def: InstAlias<"{{mnemonic}} $rd, $rs1",
                ({{def}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN)>;
+"""
+
+TBLGEN_ALIAS_TEMPLATE_IFRM = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1, FRM_DYN), 0>;
 """
 
 TBLGEN_TEMPLATE_I = """
@@ -311,6 +360,10 @@ def {{def}} : RVInstI<
 }
 """
 
+TBLGEN_ALIAS_TEMPLATE_I = """
+def : InstAlias<"{{mnemonic}} $rd, $rs1", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1{% if rm -%}, {{rm}}{%- endif %}), 0>;
+"""
+
 TBLGEN_TEMPLATES = {
     InstructionFormat.R: TBLGEN_TEMPLATE_R,
     InstructionFormat.I: TBLGEN_TEMPLATE_I,
@@ -324,6 +377,21 @@ TBLGEN_TEMPLATES = {
     InstructionFormat.SIMM12: TBLGEN_TEMPLATE_SIMM12,
     InstructionFormat.RVF: TBLGEN_TEMPLATE_RVF,
     InstructionFormat.IVF: TBLGEN_TEMPLATE_IVF,
+}
+
+TBLGEN_ALIAS_TEMPLATES = {
+    InstructionFormat.R: TBLGEN_ALIAS_TEMPLATE_R,
+    InstructionFormat.I: TBLGEN_ALIAS_TEMPLATE_I,
+    # InstructionFormat.S: TBLGEN_ALIAS_TEMPLATE_S, // not needed by xsflt
+    # InstructionFormat.U: TBLGEN_ALIAS_TEMPLATE_U, // not needed by xsflt
+    InstructionFormat.R4: TBLGEN_ALIAS_TEMPLATE_R4,
+    InstructionFormat.RFRM: TBLGEN_ALIAS_TEMPLATE_RFRM,
+    InstructionFormat.IFRM: TBLGEN_ALIAS_TEMPLATE_IFRM,
+    InstructionFormat.R4FRM: TBLGEN_ALIAS_TEMPLATE_R4FRM,
+    InstructionFormat.IIMM12: TBLGEN_ALIAS_TEMPLATE_IIMM12,
+    InstructionFormat.SIMM12: TBLGEN_ALIAS_TEMPLATE_SIMM12,
+    InstructionFormat.RVF: TBLGEN_ALIAS_TEMPLATE_RVF,
+    InstructionFormat.IVF: TBLGEN_ALIAS_TEMPLATE_IVF,
 }
 
 TBLGEN_OPERAND_TYPES = {
@@ -343,26 +411,75 @@ TBLGEN_OPERAND_TYPES = {
 
 
 def get_dtypes(mnemonic: str) -> dict[str, str]:
-    regs = ("rs1", "rs2", "rs3", "rd")
+    # Handle load/stores directly
     match mnemonic:
-        case "flh" | "fsh":
-            return {r: TBLGEN_OPERAND_TYPES[DataType.f16] for r in regs}
-        case "flah" | "fsah":
-            return {r: TBLGEN_OPERAND_TYPES[DataType.f16alt] for r in regs}
-        case "flb" | "fsb" | "flab" | "fsab":
-            return {r: TBLGEN_OPERAND_TYPES[DataType.f8] for r in regs}
+        case "flh":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rd": TBLGEN_OPERAND_TYPES[DataType.f16],
+            }
+        case "flah":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rd": TBLGEN_OPERAND_TYPES[DataType.f16alt],
+            }
+        case "flb":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rd": TBLGEN_OPERAND_TYPES[DataType.f8],
+            }
+        case "flab":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rd": TBLGEN_OPERAND_TYPES[DataType.f8alt],
+            }
+        case "fsh":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rs2": TBLGEN_OPERAND_TYPES[DataType.f16],
+            }
+        case "fsah":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rs2": TBLGEN_OPERAND_TYPES[DataType.f16alt],
+            }
+        case "fsb":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rs2": TBLGEN_OPERAND_TYPES[DataType.f8],
+            }
+        case "fsab":
+            return {
+                "rs1": TBLGEN_OPERAND_TYPES[DataType.integer],
+                "rs2": TBLGEN_OPERAND_TYPES[DataType.f8alt],
+            }
 
-    # Vector format with R: it's just noise in the instruction naming, let's remove it
+    # Vector format with R: it's just noise in the instruction naming,
+    # it doesn't affect operand types, let's remove it
     if is_vector(mnemonic):
         mnemonic = re.sub("[\\._][rR]", "", mnemonic)
 
     # Reasonable mnemonics
-    inst_t = mnemonic.upper().split("_")[1:]
+    inst_t = mnemonic.upper().replace(".", "_").split("_")[1:]
     # fcvt.ah.s <- source
     #      ^
     #      dest
     source_t = TBLGEN_OPERAND_TYPES[DataType.from_str(inst_t[-1])]
     dest_t = TBLGEN_OPERAND_TYPES[DataType.from_str(inst_t[0])]
+
+    # FIXME patch logical predicates
+    predicates = (
+        "fclass",
+        "feq",
+        "fgt",
+        "flt",
+        "fle",
+        "fge",
+    )
+    is_predicate = "^(v)?({p})".format(p="|".join(predicates))
+    if re.match(is_predicate, mnemonic, re.IGNORECASE):
+        dest_t = TBLGEN_OPERAND_TYPES[DataType.integer]
+
     return {
         "rs1": source_t,
         "rs2": source_t,
@@ -381,20 +498,14 @@ def get_properties(mnemonic: str) -> dict[str, Any]:
     return properties
 
 
-def to_tablegen(
-    inst: Instruction, defprefix: str | None = None, decoderns: str | None = None
-) -> str:
+def to_tablegen_def(inst: Instruction, extension: str) -> str:
     dtype = get_dtypes(inst.mnemonic)
-    properties = get_properties(inst.mnemonic)
     template = jinja2.Template(TBLGEN_TEMPLATES[inst.format])
-    tblgendef = inst.mnemonic.upper().replace(".", "_")
-
-    if decoderns:
-        properties["DecoderNamespace"] = f'"{decoderns}"'
-
-    if defprefix:
-        tblgendef = defprefix + tblgendef
-
+    tblgendef = extension_to_defprefix(extension) + inst.mnemonic.upper().replace(
+        ".", "_"
+    )
+    properties = get_properties(inst.mnemonic)
+    properties["DecoderNamespace"] = '"{}"'.format(extension_to_decoderns(extension))
     args = {
         "def": tblgendef,
         "mnemonic": inst.mnemonic.replace("_", "."),
@@ -406,22 +517,43 @@ def to_tablegen(
     return template.render(**args)
 
 
+def to_tablegen_alias(
+    inst: Instruction,
+    extension: str,
+    uses_mnemonic: str,
+    uses_extension: str,
+    defprefix: str | None = None,
+) -> str:
+    dtype = get_dtypes(inst.mnemonic)
+
+    template = jinja2.Template(TBLGEN_ALIAS_TEMPLATES[inst.format])
+    use = uses_mnemonic.upper().replace(".", "_")
+    if defprefix:
+        use = defprefix + use
+
+    args = {"mnemonic": inst.mnemonic.replace("_", "."), "dtype": dtype, "use": use}
+
+    # FIXME upstream FCVT only needs frm
+    if (
+        inst.format == InstructionFormat.I
+        and uses_extension != "rv_xsflts"
+        and uses_mnemonic.startswith("fcvt")
+    ):
+        args["rm"] = "FRM_DYN"
+
+    return template.render(**args)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Process an instruction YAML dictionary produced "
         "by riscv-opcodes and emits tablegen instruction definitions for the LLVM backend."
     )
     parser.add_argument(
-        "--defprefix",
+        "--ext",
         type=str,
-        default=None,
-        help="Prefix for Tablegen definitions.",
-    )
-    parser.add_argument(
-        "--decoderns",
-        type=str,
-        default=None,
-        help="LLVM decoding namespace.",
+        required=True,
+        help="RISC-V extension name (e.g.: Xfoo)",
     )
     parser.add_argument(
         "input",
@@ -430,6 +562,7 @@ def main():
         help="Path to the input file. If not specified or '-', reads from stdin.",
     )
     args = parser.parse_args()
+    log.getLogger().setLevel(log.INFO)
 
     if args.input == "-":
         input = yaml.safe_load(sys.stdin)
@@ -439,12 +572,36 @@ def main():
 
     print("// Auto-generated by:")
     print("// $ {}".format(" ".join(sys.argv)))
+
+    instructions: dict[str, Instruction] = {}
+    pseudos: List[Instruction] = []
+    uses: List[Tuple[str, str]] = []
+
+    extension: str = args.ext
+
     for mnemonic, spec in input.items():
-        if "is_pseudo_of" in spec:
-            continue
+        mnemonic: str = mnemonic.replace("_", ".")
         inst = Instruction.from_dict(mnemonic, spec)
-        # print("// {}".format(inst))
-        print(to_tablegen(inst, args.defprefix, args.decoderns))
+        if "is_pseudo_of" in spec:
+            inst_use = spec["is_pseudo_of"]["instruction"]
+            ext_use = spec["is_pseudo_of"]["extension"]
+            pseudos.append(inst)
+            uses.append((inst_use, ext_use))
+        else:
+            instructions[mnemonic] = inst
+
+    for _, inst in instructions.items():
+        print(to_tablegen_def(inst, extension))
+
+    for pseudo, (inst_use, ext_use) in zip(pseudos, uses):
+        defprefix = None
+        if inst_use in instructions:
+            defprefix = extension_to_defprefix(extension)
+        else:
+            log.info(
+                f"Alias to another extension: {pseudo.mnemonic:10} -> {ext_use}::{inst_use}"
+            )
+        print(to_tablegen_alias(pseudo, extension, inst_use, ext_use, defprefix))
 
 
 if __name__ == "__main__":

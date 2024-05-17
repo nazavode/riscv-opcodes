@@ -33,43 +33,48 @@
 
 # RV32Xfhalf - half-precision floats
 # startgroup Xfhalf half-precision floats
-$pseudo_op rv_zfh::flh  flh       rd rs1 imm12 14..12=1 6..2=0x01 1..0=3
-$pseudo_op rv_zfh::fsh  fsh       imm12hi rs1 rs2 imm12lo 14..12=1 6..2=0x09 1..0=3
-fmadd.h   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x10 1..0=3
-fmsub.h   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x11 1..0=3
-fnmsub.h  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x12 1..0=3
-fnmadd.h  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x13 1..0=3
-fadd.h    rd rs1 rs2      31..27=0x00 rm       26..25=2 6..2=0x14 1..0=3
-fsub.h    rd rs1 rs2      31..27=0x01 rm       26..25=2 6..2=0x14 1..0=3
-fmul.h    rd rs1 rs2      31..27=0x02 rm       26..25=2 6..2=0x14 1..0=3
-fdiv.h    rd rs1 rs2      31..27=0x03 rm       26..25=2 6..2=0x14 1..0=3
-fsqrt.h   rd rs1 24..20=0 31..27=0x0B rm       26..25=2 6..2=0x14 1..0=3
-fsgnj.h   rd rs1 rs2      31..27=0x04 14..12=0 26..25=2 6..2=0x14 1..0=3
-fsgnjn.h  rd rs1 rs2      31..27=0x04 14..12=1 26..25=2 6..2=0x14 1..0=3
-fsgnjx.h  rd rs1 rs2      31..27=0x04 14..12=2 26..25=2 6..2=0x14 1..0=3
-fmin.h    rd rs1 rs2      31..27=0x05 14..12=0 26..25=2 6..2=0x14 1..0=3
-fmax.h    rd rs1 rs2      31..27=0x05 14..12=1 26..25=2 6..2=0x14 1..0=3
-feq.h     rd rs1 rs2      31..27=0x14 14..12=2 26..25=2 6..2=0x14 1..0=3
-flt.h     rd rs1 rs2      31..27=0x14 14..12=1 26..25=2 6..2=0x14 1..0=3
-fle.h     rd rs1 rs2      31..27=0x14 14..12=0 26..25=2 6..2=0x14 1..0=3
-fcvt.w.h  rd rs1 24..20=0 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.wu.h rd rs1 24..20=1 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.h.w  rd rs1 24..20=0 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fcvt.h.wu rd rs1 24..20=1 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fmv.x.h   rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=2 6..2=0x14 1..0=3
-fclass.h  rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=2 6..2=0x14 1..0=3
-fmv.h.x   rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=2 6..2=0x14 1..0=3
-# RV64Xfhalf: in addition to the above
-fcvt.l.h  rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.lu.h rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-fcvt.h.l  rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-fcvt.h.lu rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-# XfhalfwithF - half-precision conversions with F extension
-fcvt.s.h  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
-fcvt.h.s  rd rs1 24..20=0 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
-# XfhalfwithD - half-precision conversions with D extension (in addition to XfhalfwithF)
-fcvt.d.h  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
-fcvt.h.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+
+# Beware: all instructions below are direct copies of zfh:
+# while they can be technically defined as identity pseudos,
+# it makes no sense at all.
+
+# $pseudo_op rv_zfh::flh  flh       rd rs1 imm12 14..12=1 6..2=0x01 1..0=3
+# $pseudo_op rv_zfh::fsh  fsh       imm12hi rs1 rs2 imm12lo 14..12=1 6..2=0x09 1..0=3
+# fmadd.h   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x10 1..0=3
+# fmsub.h   rd rs1 rs2 rs3 rm 26..25=2 6..2=0x11 1..0=3
+# fnmsub.h  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x12 1..0=3
+# fnmadd.h  rd rs1 rs2 rs3 rm 26..25=2 6..2=0x13 1..0=3
+# fadd.h    rd rs1 rs2      31..27=0x00 rm       26..25=2 6..2=0x14 1..0=3
+# fsub.h    rd rs1 rs2      31..27=0x01 rm       26..25=2 6..2=0x14 1..0=3
+# fmul.h    rd rs1 rs2      31..27=0x02 rm       26..25=2 6..2=0x14 1..0=3
+# fdiv.h    rd rs1 rs2      31..27=0x03 rm       26..25=2 6..2=0x14 1..0=3
+# fsqrt.h   rd rs1 24..20=0 31..27=0x0B rm       26..25=2 6..2=0x14 1..0=3
+# fsgnj.h   rd rs1 rs2      31..27=0x04 14..12=0 26..25=2 6..2=0x14 1..0=3
+# fsgnjn.h  rd rs1 rs2      31..27=0x04 14..12=1 26..25=2 6..2=0x14 1..0=3
+# fsgnjx.h  rd rs1 rs2      31..27=0x04 14..12=2 26..25=2 6..2=0x14 1..0=3
+# fmin.h    rd rs1 rs2      31..27=0x05 14..12=0 26..25=2 6..2=0x14 1..0=3
+# fmax.h    rd rs1 rs2      31..27=0x05 14..12=1 26..25=2 6..2=0x14 1..0=3
+# feq.h     rd rs1 rs2      31..27=0x14 14..12=2 26..25=2 6..2=0x14 1..0=3
+# flt.h     rd rs1 rs2      31..27=0x14 14..12=1 26..25=2 6..2=0x14 1..0=3
+# fle.h     rd rs1 rs2      31..27=0x14 14..12=0 26..25=2 6..2=0x14 1..0=3
+# fcvt.w.h  rd rs1 24..20=0 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.wu.h rd rs1 24..20=1 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.h.w  rd rs1 24..20=0 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.h.wu rd rs1 24..20=1 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+# fmv.x.h   rd rs1 24..20=0 31..27=0x1C 14..12=0 26..25=2 6..2=0x14 1..0=3
+# fclass.h  rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=2 6..2=0x14 1..0=3
+# fmv.h.x   rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=2 6..2=0x14 1..0=3
+# # RV64Xfhalf: in addition to the above
+# fcvt.l.h  rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.lu.h rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.h.l  rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+# fcvt.h.lu rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+# # XfhalfwithF - half-precision conversions with F extension
+# fcvt.s.h  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
+# fcvt.h.s  rd rs1 24..20=0 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+# # XfhalfwithD - half-precision conversions with D extension (in addition to XfhalfwithF)
+# fcvt.d.h  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
+# fcvt.h.d  rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # end_group
 
 # ▄▀█ █░░ ▀█▀ █▀▀ █▀█ █▄░█ ▄▀█ ▀█▀ █▀▀   █░█ ▄▀█ █░░ █▀▀
@@ -104,17 +109,17 @@ $pseudo_op rv_zfh::fmv.x.h       fmv.x.ah    rd rs1 24..20=0 31..27=0x1C 14..12=
 $pseudo_op rv_zfh::fclass.h      fclass.ah   rd rs1 24..20=0 31..27=0x1C 14..12=1 26..25=2 6..2=0x14 1..0=3
 $pseudo_op rv_zfh::fmv.h.x       fmv.ah.x    rd rs1 24..20=0 31..27=0x1E 14..12=0 26..25=2 6..2=0x14 1..0=3
 # RV64Xfhalf: in addition to the above
-$pseudo_op rv_xsflts::fcvt.l.h   fcvt.l.ah   rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-$pseudo_op rv_xsflts::fcvt.lu.h  fcvt.lu.ah  rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
-$pseudo_op rv_xsflts::fcvt.h.l   fcvt.ah.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
-$pseudo_op rv_xsflts::fcvt.h.lu  fcvt.ah.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv64_zfh::fcvt.l.h   fcvt.l.ah   rd rs1 24..20=2 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv64_zfh::fcvt.lu.h  fcvt.lu.ah  rd rs1 24..20=3 31..27=0x18 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv64_zfh::fcvt.h.l   fcvt.ah.l   rd rs1 24..20=2 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv64_zfh::fcvt.h.lu  fcvt.ah.lu  rd rs1 24..20=3 31..27=0x1A rm       26..25=2 6..2=0x14 1..0=3
 # XfhalfwithF - half-precision conversions with F extension
 # $pseudo_op rv_zfbfmin::fcvt.s.bf16  fcvt.s.ah  rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
 $pseudo_op rv_zfh::fcvt.s.h      fcvt.s.ah   rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=0 6..2=0x14 1..0=3
 $pseudo_op rv_zfh::fcvt.h.s      fcvt.ah.s   rd rs1 24..20=0 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # XfhalfwithD - half-precision conversions with D extension (in addition to XfhalfwithF)
-$pseudo_op rv_xsflts::fcvt.d.h   fcvt.d.ah   rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
-$pseudo_op rv_xsflts::fcvt.h.d   fcvt.ah.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
+$pseudo_op rv_d_zfh::fcvt.d.h   fcvt.d.ah   rd rs1 24..20=2 31..27=0x08 14..12=0 26..25=1 6..2=0x14 1..0=3
+$pseudo_op rv_d_zfh::fcvt.h.d   fcvt.ah.d   rd rs1 24..20=1 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 # Xfalthalfwithhalf - alternate half-precision conversions with Xfhalf extension
 fcvt.h.h                                     rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3
 $pseudo_op rv_xsflts::fcvt.h.h   fcvt.ah.h   rd rs1 24..20=2 31..27=0x08 rm       26..25=2 6..2=0x14 1..0=3

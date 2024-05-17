@@ -328,18 +328,11 @@ def create_inst_dict(file_filter, include_pseudo=False, include_pseudo_ops=[]):
             (name, single_dict) = process_enc_line(pseudo_inst + ' ' + line, f)
             # add reference to original instruction
             single_dict['is_pseudo_of'] = {"extension": ext, "instruction": orig_inst}
-            # add the pseudo_op to the dictionary only if the original
-            # instruction is not already in the dictionary.
-            if orig_inst.replace('.','_') not in instr_dict \
-                    or include_pseudo \
-                    or name in include_pseudo_ops:
 
-                # update the final dict with the instruction
-                if name not in instr_dict:
-                    instr_dict[name] = single_dict
-                    logging.debug(f'        including pseudo_ops:{name}')
-            else:
-                logging.debug(f'        Skipping pseudo_op {pseudo_inst} since original instruction {orig_inst} already selected in list')
+            # update the final dict with the instruction
+            if name not in instr_dict:
+                instr_dict[name] = single_dict
+                logging.debug(f'        including pseudo_ops:{name}')
 
     # third pass if for imported instructions
     logging.debug('Collecting imported instructions')
