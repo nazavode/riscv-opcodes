@@ -104,6 +104,23 @@ class InstructionFormat(IntEnum):
         )
 
 
+# ENCODING_FIELDS = {
+#     "opcode": (0, 7),
+#     "rs2": (20, 5),
+#     "csr": (20, 12),
+#     "funct2": (25, 2),
+#     "funct3": (12, 3),
+#     "funct7": (25, 7),
+#     "imm12": (20, 12),
+#     "imm12hi": (25, 7),
+#     "imm12lo": (7, 5),
+#     "f2": (30, 2),
+#     "vecfltop": (25, 5),
+#     "r": (14, 1),
+#     "vfmt": (12, 2),
+# }
+
+
 @dataclass
 class Encoding:
 
@@ -152,6 +169,7 @@ class Instruction:
     mnemonic: str
     encoding: Encoding
     format: InstructionFormat
+    encoding_repr: str
 
     @classmethod
     def from_dict(cls, mnemonic: str, spec: dict) -> Self:
@@ -173,6 +191,7 @@ class Instruction:
             mnemonic=mnemonic,
             encoding=enc,
             format=fmt,
+            encoding_repr=spec["encoding"],
         )
 
 
@@ -364,6 +383,15 @@ TBLGEN_ALIAS_TEMPLATE_I = """
 def : InstAlias<"{{mnemonic}} $rd, $rs1", ({{use}} {{dtype["rd"]}}:$rd, {{dtype["rs1"]}}:$rs1{% if rm -%}, {{rm}}{%- endif %}), 0>;
 """
 
+LIT_FILE_TEMPLATE = """
+# RUN: llvm-mc %s -triple=riscv64 -mattr=+d,+{{ext|lower}} -riscv-no-aliases -show-encoding | FileCheck %s
+
+{% for check in checks %}
+# CHECK: encoding: {{check.encoding}}
+{{check.asm}}
+{% endfor %}
+"""
+
 TBLGEN_TEMPLATES = {
     InstructionFormat.R: TBLGEN_TEMPLATE_R,
     InstructionFormat.I: TBLGEN_TEMPLATE_I,
@@ -544,6 +572,47 @@ def to_tablegen_alias(
     return template.render(**args)
 
 
+@dataclass
+class EncodingCheck:
+    asm: str
+    encoding: str
+
+
+def to_lit_test(instructions: dict[str, Instruction], extension: str) -> str:
+    asm_operands = {
+        InstructionFormat.R: ("ft0", "ft0", "ft0"),
+        InstructionFormat.I: ("ft0", "ft0"),
+        InstructionFormat.S: ("ft0", "ft0"),
+        InstructionFormat.U: ("ft0"),
+        InstructionFormat.R4: ("ft0", "ft0", "ft0", "ft0"),
+        InstructionFormat.RVF: ("ft0", "ft0", "ft0"),
+        InstructionFormat.RFRM: ("ft0", "ft0", "ft0", "dyn"),
+        InstructionFormat.IFRM: ("ft0", "ft0", "dyn"),
+        InstructionFormat.R4FRM: ("ft0", "ft0", "ft0", "ft0", "dyn"),
+        InstructionFormat.IIMM12: ("ft0", "ft0", "imm12"),
+        InstructionFormat.SIMM12: ("ft0", "ft0", "imm12lo", "imm12hi"),
+        InstructionFormat.IVF: ("ft0", "ft0"),
+    }
+    checks = []
+    for _, inst in instructions.items():
+        print(inst)
+        operands = asm_operands[inst.format]
+        asm = "{} {}".format(inst.mnemonic, ", ".join(operands))
+        # Expected encoding:
+        encoding = inst.encoding_repr
+        encoding = encoding.replace("-", "0")
+        assert len(encoding) == 32
+        chunks_repr = re.findall(".{8}", encoding)
+        assert len(chunks_repr) == 4
+        chunks_int = (int(v, 2) for v in chunks_repr)
+        chunks_hex = ("0x{:02x}".format(v) for v in chunks_int)
+        chunks = "[{}]".format(",".join(chunks_hex))
+        #
+        checks.append(EncodingCheck(asm, chunks))
+    template = jinja2.Template(LIT_FILE_TEMPLATE)
+    return template.render(ext=extension, checks=checks)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Process an instruction YAML dictionary produced "
@@ -554,6 +623,11 @@ def main():
         type=str,
         required=True,
         help="RISC-V extension name (e.g.: Xfoo)",
+    )
+    parser.add_argument(
+        "--emit-test",
+        type=str,
+        help="Emit lit encoding roundtrip tests to the specified file.",
     )
     parser.add_argument(
         "input",
@@ -590,8 +664,12 @@ def main():
         else:
             instructions[mnemonic] = inst
 
+    # Instruction definitions
+
     for _, inst in instructions.items():
         print(to_tablegen_def(inst, extension))
+
+    # Instruction aliases
 
     for pseudo, (inst_use, ext_use) in zip(pseudos, uses):
         defprefix = None
@@ -602,6 +680,12 @@ def main():
                 f"Alias to another extension: {pseudo.mnemonic:10} -> {ext_use}::{inst_use}"
             )
         print(to_tablegen_alias(pseudo, extension, inst_use, ext_use, defprefix))
+
+    # Encoding roundtrip tests
+
+    if args.emit_test:
+        with open(args.emit_test, "w") as f:
+            f.write(to_lit_test(instructions, extension))
 
 
 if __name__ == "__main__":
