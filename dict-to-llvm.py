@@ -578,34 +578,51 @@ class EncodingCheck:
     encoding: str
 
 
-def to_lit_test(instructions: dict[str, Instruction], extension: str) -> str:
+def get_asm_operands(inst: Instruction) -> List[str]:
     asm_operands = {
-        InstructionFormat.R: ("ft0", "ft0", "ft0"),
-        InstructionFormat.I: ("ft0", "ft0"),
-        InstructionFormat.S: ("ft0", "ft0"),
-        InstructionFormat.U: ("ft0"),
-        InstructionFormat.R4: ("ft0", "ft0", "ft0", "ft0"),
-        InstructionFormat.RVF: ("ft0", "ft0", "ft0"),
-        InstructionFormat.RFRM: ("ft0", "ft0", "ft0", "dyn"),
-        InstructionFormat.IFRM: ("ft0", "ft0", "dyn"),
-        InstructionFormat.R4FRM: ("ft0", "ft0", "ft0", "ft0", "dyn"),
-        InstructionFormat.IIMM12: ("ft0", "ft0", "imm12"),
-        InstructionFormat.SIMM12: ("ft0", "ft0", "imm12lo", "imm12hi"),
-        InstructionFormat.IVF: ("ft0", "ft0"),
+        InstructionFormat.R: ("rd", "rs1", "rs2"),
+        InstructionFormat.I: ("rd", "rs1"),
+        InstructionFormat.S: ("rs1", "rs2"),
+        InstructionFormat.U: ("rd"),
+        InstructionFormat.R4: ("rd", "rs1", "rs2", "rs3"),
+        InstructionFormat.RVF: ("rd", "rs1", "rs2"),
+        InstructionFormat.RFRM: ("rd", "rs1", "rs2", "rm"),
+        InstructionFormat.IFRM: ("rd", "rs1", "rm"),
+        InstructionFormat.R4FRM: ("rs1", "rs2", "rs3", "rd", "rm"),
+        InstructionFormat.IIMM12: ("rs1", "rd", "imm12"),
+        InstructionFormat.SIMM12: ("rs1", "rs2", "imm12lo", "imm12hi"),
+        InstructionFormat.IVF: ("rd", "rs1"),
     }
+    dtypes = get_dtypes(inst.mnemonic)
+    registers = []
+    for op in asm_operands[inst.format]:
+        if op == "rm":
+            registers.append("rne")
+            continue
+        elif op in {"imm12", "imm12lo", "imm12hi"}:
+            registers.append('0')
+            continue
+        regclass = dtypes[op]
+        if regclass == "GPR":
+            registers.append("x0")
+        else:
+            registers.append("ft0")
+    return registers
+
+def to_lit_test(instructions: dict[str, Instruction], extension: str) -> str:
     checks = []
     for _, inst in instructions.items():
-        operands = asm_operands[inst.format]
+        operands = get_asm_operands(inst)
         asm = "{} {}".format(inst.mnemonic, ", ".join(operands))
         # Expected encoding:
         encoding = inst.encoding_repr
         encoding = encoding.replace("-", "0")
         assert len(encoding) == 32
-        chunks_repr = re.findall(".{8}", encoding)
+        chunks_repr = re.findall("[01]{8}", encoding)
         assert len(chunks_repr) == 4
         chunks_int = (int(v, 2) for v in chunks_repr)
         chunks_hex = ("0x{:02x}".format(v) for v in chunks_int)
-        chunks = "[{}]".format(",".join(chunks_hex))
+        chunks = "[{}]".format(",".join(reversed(list(chunks_hex))))
         #
         checks.append(EncodingCheck(asm, chunks))
     template = jinja2.Template(LIT_FILE_TEMPLATE)
